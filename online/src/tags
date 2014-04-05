@@ -1,0 +1,190 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BINDIR	Makefile	/^BINDIR = $(WORKDIR)\/bin$/;"	m
+CC	Makefile	/^CC = g++$/;"	m
+CFLAGS	Makefile	/^CFLAGS  = -Wall -pipe -DUSE_TLOG -DDEBUG -g -D_GNU_SOURCE -shared -fPIC -D_REENTRANT \\$/;"	m
+CMD_PROCESSOR_INTERFACE_H	cmd_processor_interface.h	3;"	d
+CmdProcessorInterface	cmd_processor_interface.h	/^class CmdProcessorInterface$/;"	c
+DB_LOGIN_ACK_FLAG_ACCOUNT_UNSAFE	proto.h	100;"	d
+DB_LOGIN_ACK_FLAG_LOGIN_IN_DIFF_CITY	proto.h	97;"	d
+DB_LOGIN_ACK_FLAG_LOGIN_IN_DIFF_CITY_TOO_MUCH	proto.h	98;"	d
+DB_LOGIN_ACK_FLAG_SUCC	proto.h	95;"	d
+DB_LOGIN_ACK_FLAG_WRONG_PASSWD_TOO_MUCH	proto.h	96;"	d
+DB_LOGIN_ACK_FLAG_WRONG_VERIFY_CODE	proto.h	99;"	d
+FOREACH	macro_utils.h	4;"	d
+FOREACH_NOINCR_ITER	macro_utils.h	10;"	d
+GLOBAL_DATA_H	global_data.h	3;"	d
+INCLUDE	Makefile	/^INCLUDE =   -I\/usr\/include\/glib-2.0 -I\/usr\/lib\/glib-2.0\/include\/ -I..\/..\/ \\$/;"	m
+KeepLiveCmdProcessor	login_processor.h	/^class KeepLiveCmdProcessor : public CmdProcessorInterface$/;"	c
+LFLAGS	Makefile	/^LFLAGS 	= -L$(LIB_CLIENT_DIR) -lcrypto -lpthread -pthread -lm -ltaomee -ldl -lrt -lxml2 \\$/;"	m
+LIB_CLIENT_DIR	Makefile	/^LIB_CLIENT_DIR = $(PROTODIR)\/client$/;"	m
+LIB_CLIENT_PROTO	Makefile	/^LIB_CLIENT_PROTO = $(LIB_CLIENT_DIR)\/libclientproto.a$/;"	m
+LOGIN_PROCESSOR_H	login_processor.h	2;"	d
+LoginCmdProcessor	login_processor.h	/^class LoginCmdProcessor : public CmdProcessorInterface$/;"	c
+NOW	macro_utils.h	17;"	d
+OBJDIR	Makefile	/^OBJDIR = $(WORKDIR)\/obj$/;"	m
+OBJS	Makefile	/^OBJS = $(patsubst %.cpp, %.o, $(SRCS))$/;"	m
+OL_REVISION	server.h	6;"	d
+PLAYER_MANAGER_H	player_manager.h	3;"	d
+PROTOBUF_CFLAGS	Makefile	/^PROTOBUF_CFLAGS = $(shell pkg-config --cflags protobuf)$/;"	m
+PROTOBUF_LFLAGS	Makefile	/^PROTOBUF_LFLAGS = $(shell pkg-config --libs protobuf)$/;"	m
+PROTODIR	Makefile	/^PROTODIR = $(WORKDIR)\/proto$/;"	m
+PROTO_FROM_CLIENT	proto_processor.h	/^    PROTO_FROM_CLIENT = 0,$/;"	e	enum:__anon2
+PROTO_FROM_SERV	proto_processor.h	/^    PROTO_FROM_SERV = 1,$/;"	e	enum:__anon2
+PROTO_H	proto.h	3;"	d
+PROTO_PROCESSOR_H	proto_processor.h	2;"	d
+PlayerManager	player_manager.cpp	/^PlayerManager::PlayerManager()$/;"	f	class:PlayerManager
+PlayerManager	player_manager.h	/^class PlayerManager$/;"	c
+ProtoProcessor	proto_processor.cpp	/^ProtoProcessor::ProtoProcessor()$/;"	f	class:ProtoProcessor
+ProtoProcessor	proto_processor.h	/^class ProtoProcessor$/;"	c
+REVERSE_FOREACH	macro_utils.h	7;"	d
+REVERSE_FOREACH_NOINCR_ITER	macro_utils.h	13;"	d
+SERVER_H	server.h	3;"	d
+SRCS	Makefile	/^SRCS = $(wildcard *.cpp)$/;"	m
+TARGETS	Makefile	/^TARGETS = $(BINDIR)\/libonline.so$/;"	m
+WORKDIR	Makefile	/^WORKDIR = ..\/$/;"	m
+__COMMON_H__	common.h	2;"	d
+__MACRO_UTILS_H__	macro_utils.h	2;"	d
+__PLAYER_H__	player.h	2;"	d
+add_player_to_fd_users	player_manager.cpp	/^void PlayerManager::add_player_to_fd_users(player_t *p, int fd)$/;"	f	class:PlayerManager
+alloc_player	player_manager.cpp	/^player_t* PlayerManager::alloc_player(int fd, userid_t userid)$/;"	f	class:PlayerManager
+banben_cli_proto_header_t	proto.h	/^struct banben_cli_proto_header_t$/;"	s
+battle_name	server.h	/^    char battle_name[256];$/;"	m	struct:server_config_t
+before_reload	server.cpp	/^extern "C" int before_reload(int isparent)$/;"	f
+checksum	proto.h	/^    uint32_t checksum;$/;"	m	struct:cli_proto_header_t
+cli_proto_header_t	proto.h	/^struct cli_proto_header_t$/;"	s
+cmd	proto.h	/^    uint16_t cmd;$/;"	m	struct:db_proto_header_t
+cmd	proto.h	/^    uint32_t cmd;$/;"	m	struct:banben_cli_proto_header_t
+cmd	proto.h	/^    uint32_t cmd;$/;"	m	struct:cli_proto_header_t
+cmd_processors_	proto_processor.h	/^    std::map<uint32_t, CmdProcessorInterface*> cmd_processors_;$/;"	m	class:ProtoProcessor
+conf_path	server.h	/^    char conf_path[256];$/;"	m	struct:server_config_t
+cs_enter_server_	login_processor.h	/^    onlineproto::cs_enter_server cs_enter_server_;  $/;"	m	class:LoginCmdProcessor
+cs_keep_live_	login_processor.h	/^    onlineproto::cs_keep_live cs_keep_live_;  $/;"	m	class:KeepLiveCmdProcessor
+db_add_session_ack_t	proto.h	/^struct db_add_session_ack_t$/;"	s
+db_add_session_req_t	proto.h	/^struct db_add_session_req_t$/;"	s
+db_check_session_req_t	proto.h	/^struct db_check_session_req_t$/;"	s
+db_cmd_add_session	proto.h	/^    db_cmd_add_session = 0xA122,$/;"	e	enum:__anon1
+db_cmd_check_session	proto.h	/^    db_cmd_check_session = 0xA03A,$/;"	e	enum:__anon1
+db_cmd_is_active	proto.h	/^    db_cmd_is_active = 0xA029,$/;"	e	enum:__anon1
+db_cmd_login_with_verify_code	proto.h	/^    db_cmd_login_with_verify_code = 0xA039,$/;"	e	enum:__anon1
+db_cmd_user_logout	proto.h	/^    db_cmd_user_logout = 0xA125,$/;"	e	enum:__anon1
+db_err_check_session_failed	proto.h	/^    db_err_check_session_failed = 4431,$/;"	e	enum:__anon1
+db_is_active_ack_t	proto.h	/^struct db_is_active_ack_t$/;"	s
+db_is_active_req_t	proto.h	/^struct db_is_active_req_t$/;"	s
+db_login_with_verify_code_ack_t	proto.h	/^struct db_login_with_verify_code_ack_t$/;"	s
+db_login_with_verify_code_req_t	proto.h	/^struct db_login_with_verify_code_req_t$/;"	s
+db_proto_header_t	proto.h	/^struct db_proto_header_t$/;"	s
+db_user_logout_req_t	proto.h	/^struct db_user_logout_req_t$/;"	s
+dbproxy_name	server.h	/^    char dbproxy_name[256];$/;"	m	struct:server_config_t
+dealloc_player	player_manager.cpp	/^void PlayerManager::dealloc_player(player_t* player)$/;"	f	class:PlayerManager
+default_player_	proto_processor.h	/^    player_t default_player_;$/;"	m	class:ProtoProcessor
+del_flag	proto.h	/^    uint32_t del_flag;$/;"	m	struct:db_check_session_req_t
+donot_use_wonderful	server.h	/^    uint32_t donot_use_wonderful;$/;"	m	struct:server_config_t
+earse_player_from_fd_users	player_manager.cpp	/^void PlayerManager::earse_player_from_fd_users(int fd)$/;"	f	class:PlayerManager
+email	proto.h	/^    char email[64];$/;"	m	struct:db_login_with_verify_code_req_t
+enter_game	proto.h	/^    uint8_t enter_game;$/;"	m	struct:db_check_session_req_t
+family_name	server.h	/^    char family_name[256];$/;"	m	struct:server_config_t
+fd	player.h	/^    int fd; \/\/ 客户端fd$/;"	m	struct:player_t
+fd_users_	player_manager.h	/^    std::map<int, player_t *> fd_users_; \/\/ fd映射player$/;"	m	class:PlayerManager
+fdsession	player.h	/^    struct fdsession* fdsession; \/\/ async_serv 和客户端通信session$/;"	m	struct:player_t	typeref:struct:player_t::fdsession
+fini_service	server.cpp	/^extern "C" int  fini_service(int isparent)$/;"	f
+flag	proto.h	/^    uint32_t flag; $/;"	m	struct:db_login_with_verify_code_ack_t
+from_game	proto.h	/^    uint32_t from_game;$/;"	m	struct:db_check_session_req_t
+g_player_manager	global_data.cpp	/^PlayerManager* g_player_manager;$/;"	v
+g_proto_processor	global_data.cpp	/^ProtoProcessor* g_proto_processor;$/;"	v
+gameid	proto.h	/^    uint16_t gameid;$/;"	m	struct:db_login_with_verify_code_req_t
+gameid	proto.h	/^    uint32_t gameid; $/;"	m	struct:db_add_session_req_t
+gameid	proto.h	/^    uint32_t gameid; $/;"	m	struct:db_user_logout_req_t
+gameid	proto.h	/^    uint8_t gameid;$/;"	m	struct:db_is_active_req_t
+gameid	server.h	/^    uint32_t gameid; $/;"	m	struct:server_config_t
+get_pkg_len	proto_processor.cpp	/^int ProtoProcessor::get_pkg_len(int fd, const void* avail_data, $/;"	f	class:ProtoProcessor
+get_pkg_len	server.cpp	/^extern "C" int get_pkg_len(int fd, const void* avail_data, int avail_len, int isparent)$/;"	f
+get_player_by_fd	player_manager.cpp	/^player_t* PlayerManager::get_player_by_fd(int fd)$/;"	f	class:PlayerManager
+get_player_by_userid	player_manager.cpp	/^player_t* PlayerManager::get_player_by_userid(userid_t userid)$/;"	f	class:PlayerManager
+get_player_list	player_manager.cpp	/^void PlayerManager::get_player_list(std::vector<player_t*>& player_list)$/;"	f	class:PlayerManager
+get_processor	proto_processor.cpp	/^CmdProcessorInterface* ProtoProcessor::get_processor(uint32_t cmd)$/;"	f	class:ProtoProcessor
+get_userid_list	player_manager.cpp	/^void PlayerManager::get_userid_list(std::vector<userid_t>& userid_list)$/;"	f	class:PlayerManager
+home_svr_name	server.h	/^    char home_svr_name[256];$/;"	m	struct:server_config_t
+id_users_	player_manager.h	/^    std::map<userid_t, player_t *> id_users_; \/\/ 米米号映射player$/;"	m	class:PlayerManager
+id_users_ptr_t	player_manager.h	/^    typedef std::map<userid_t, player_t *>::iterator id_users_ptr_t;$/;"	t	class:PlayerManager
+idc_zone	server.h	/^    uint32_t idc_zone;$/;"	m	struct:server_config_t
+init_connections	server.cpp	/^int init_connections()$/;"	f
+init_player	player.cpp	/^int init_player(player_t* player)$/;"	f
+init_processors	server.cpp	/^int init_processors()$/;"	f
+init_service	server.cpp	/^extern "C" int  init_service(int isparent)$/;"	f
+ip	proto.h	/^    uint32_t ip;$/;"	m	struct:db_add_session_req_t
+ip	proto.h	/^    uint32_t ip;$/;"	m	struct:db_check_session_req_t
+ip	proto.h	/^    uint32_t ip;$/;"	m	struct:db_login_with_verify_code_req_t
+is_active	proto.h	/^    uint8_t is_active;$/;"	m	struct:db_is_active_ack_t
+len	proto.h	/^    uint32_t len;   $/;"	m	struct:db_proto_header_t
+len	proto.h	/^    uint32_t len;$/;"	m	struct:banben_cli_proto_header_t
+len	proto.h	/^    uint32_t len;$/;"	m	struct:cli_proto_header_t
+load_configs	server.cpp	/^bool load_configs()$/;"	f
+login_channel	proto.h	/^    uint16_t login_channel;$/;"	m	struct:db_login_with_verify_code_req_t
+login_promot_tag	proto.h	/^    char login_promot_tag[128];$/;"	m	struct:db_login_with_verify_code_req_t
+login_time	proto.h	/^    uint32_t login_time;$/;"	m	struct:db_user_logout_req_t
+logout_time	proto.h	/^    uint32_t logout_time;$/;"	m	struct:db_user_logout_req_t
+on_client_conn_closed	server.cpp	/^extern "C" void on_client_conn_closed(int fd)$/;"	f
+on_fd_closed	server.cpp	/^extern "C" void on_fd_closed(int fd)$/;"	f
+parse_message	cmd_processor_interface.h	/^inline int parse_message($/;"	f
+passwd_md5_two	proto.h	/^    char passwd_md5_two[16];$/;"	m	struct:db_login_with_verify_code_req_t
+player_leave_server	player.cpp	/^int player_leave_server(player_t* player)$/;"	f
+player_t	player.h	/^struct player_t$/;"	s
+proc_events	server.cpp	/^extern "C" void proc_events()$/;"	f
+proc_mcast_pkg	server.cpp	/^extern "C" void proc_mcast_pkg(const void* data, int len)$/;"	f
+proc_pkg_from_client	login_processor.cpp	/^int KeepLiveCmdProcessor::proc_pkg_from_client($/;"	f	class:KeepLiveCmdProcessor
+proc_pkg_from_client	login_processor.cpp	/^int LoginCmdProcessor::proc_pkg_from_client($/;"	f	class:LoginCmdProcessor
+proc_pkg_from_client	proto_processor.cpp	/^int ProtoProcessor::proc_pkg_from_client(void* data, int len,$/;"	f	class:ProtoProcessor
+proc_pkg_from_client	server.cpp	/^extern "C" int  proc_pkg_from_client(void* data, int len, fdsession_t* fdsess)$/;"	f
+proc_pkg_from_serv	login_processor.cpp	/^int KeepLiveCmdProcessor::proc_pkg_from_serv($/;"	f	class:KeepLiveCmdProcessor
+proc_pkg_from_serv	login_processor.cpp	/^int LoginCmdProcessor::proc_pkg_from_serv($/;"	f	class:LoginCmdProcessor
+proc_pkg_from_serv	proto_processor.cpp	/^void ProtoProcessor::proc_pkg_from_serv(int fd, void* data, int len)$/;"	f	class:ProtoProcessor
+proc_pkg_from_serv	server.cpp	/^extern "C" void proc_pkg_from_serv(int fd, void* data, int len)$/;"	f
+ranking_ip	server.h	/^    char ranking_ip[20];$/;"	m	struct:server_config_t
+ranking_port	server.h	/^    int ranking_port;$/;"	m	struct:server_config_t
+region	proto.h	/^    uint16_t region;$/;"	m	struct:db_check_session_req_t
+region	proto.h	/^    uint16_t region;$/;"	m	struct:db_login_with_verify_code_req_t
+register_command	proto_processor.cpp	/^int ProtoProcessor::register_command($/;"	f	class:ProtoProcessor
+reload_global_data	server.cpp	/^extern "C" int reload_global_data()$/;"	f
+ret	proto.h	/^    uint32_t ret;$/;"	m	struct:banben_cli_proto_header_t
+ret	proto.h	/^    uint32_t ret;$/;"	m	struct:cli_proto_header_t
+ret	proto.h	/^    uint32_t ret;$/;"	m	struct:db_proto_header_t
+sc_enter_server_	login_processor.h	/^    onlineproto::sc_enter_server sc_enter_server_;$/;"	m	class:LoginCmdProcessor
+sc_keep_live_	login_processor.h	/^    onlineproto::sc_keep_live sc_keep_live_;$/;"	m	class:KeepLiveCmdProcessor
+security_code	server.h	/^    char security_code[10];$/;"	m	struct:server_config_t
+send_buf	player.cpp	/^static char send_buf[65536 * 32];$/;"	v	file:
+send_buf_to_player	player.cpp	/^int send_buf_to_player(player_t* player, uint32_t cmd, const char* body, int bodylen)$/;"	f
+send_err_to_player	player.cpp	/^int send_err_to_player(player_t* player, uint32_t cmd, const uint32_t ret)$/;"	f
+send_msg_to_all_player	player_manager.cpp	/^void PlayerManager::send_msg_to_all_player(uint32_t cmd, const google::protobuf::Message& message)$/;"	f	class:PlayerManager
+send_msg_to_player	player.cpp	/^int send_msg_to_player(player_t* player, uint32_t cmd, const google::protobuf::Message& message)$/;"	f
+send_msg_to_player_in_special_map	player_manager.cpp	/^void PlayerManager::send_msg_to_player_in_special_map(uint32_t cmd, uint32_t map_id, google::protobuf::Message& message)$/;"	f	class:PlayerManager
+seq	proto.h	/^    uint32_t seq;$/;"	m	struct:banben_cli_proto_header_t
+seq	proto.h	/^    uint32_t seq;$/;"	m	struct:cli_proto_header_t
+seq	proto.h	/^    uint32_t seq;$/;"	m	struct:db_proto_header_t
+seqno	player.h	/^    uint32_t seqno; \/\/ 协议序列号$/;"	m	struct:player_t
+server_config_t	server.h	/^struct server_config_t$/;"	s
+session	player.h	/^    char session[4096];  \/\/ 缓存$/;"	m	struct:player_t
+session	proto.h	/^    char session[16];$/;"	m	struct:db_add_session_ack_t
+session	proto.h	/^    char session[16];$/;"	m	struct:db_check_session_req_t
+start_function_timers	server.cpp	/^int start_function_timers()$/;"	f
+statistic_file	server.h	/^    char statistic_file[256];$/;"	m	struct:server_config_t
+switch_name	server.h	/^    char switch_name[256];$/;"	m	struct:server_config_t
+tad	proto.h	/^    char tad[128];$/;"	m	struct:db_check_session_req_t
+to_game	proto.h	/^    uint32_t to_game;$/;"	m	struct:db_check_session_req_t
+uid	proto.h	/^    uint32_t uid;$/;"	m	struct:db_proto_header_t
+uninit_player	player.cpp	/^int uninit_player(player_t* player)$/;"	f
+use_gm	server.h	/^    uint32_t use_gm; \/\/ 是否使用gm命令$/;"	m	struct:server_config_t
+userid	player.h	/^    userid_t userid; \/\/ 米米号$/;"	m	struct:player_t
+verify_code	proto.h	/^    char verify_code[6];$/;"	m	struct:db_login_with_verify_code_req_t
+verify_session	proto.h	/^    char verify_session[16];$/;"	m	struct:db_login_with_verify_code_req_t
+verifyid	proto.h	/^    uint16_t verifyid;$/;"	m	struct:db_login_with_verify_code_req_t
+verifyid	server.h	/^    uint32_t verifyid;$/;"	m	struct:server_config_t
+wait_cmd	player.h	/^    uint32_t wait_cmd; \/\/ 客户端请求命令号$/;"	m	struct:player_t
+wonderful_word_addr	server.h	/^    char wonderful_word_addr[256];$/;"	m	struct:server_config_t
+~CmdProcessorInterface	cmd_processor_interface.h	/^    virtual ~CmdProcessorInterface() { }$/;"	f	class:CmdProcessorInterface
+~PlayerManager	player_manager.cpp	/^PlayerManager::~PlayerManager()$/;"	f	class:PlayerManager
+~ProtoProcessor	proto_processor.cpp	/^ProtoProcessor::~ProtoProcessor()$/;"	f	class:ProtoProcessor

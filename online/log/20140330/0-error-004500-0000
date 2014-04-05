@@ -1,0 +1,6 @@
+2014-03-30 00:45:39	LOGHEAD	6389	xtank-nil-192.168.134.129
+2014-03-30 00:45:39	nil	0	[../net.c][317]do_read_conn: connection [fd=9 ip=0x2F01000A] closed by peer
+2014-03-30 00:47:24	nil	0	[../net.c][320]do_read_conn: recv error: fd=8 errmsg=Connection reset by peer
+2014-03-30 00:57:04	nil	0	[../net.c][317]do_read_conn: connection [fd=8 ip=0x2F01000A] closed by peer
+2014-03-30 00:58:34	nil	0	[../net.c][320]do_read_conn: recv error: fd=9 errmsg=Connection reset by peer
+2014-03-30 00:59:36	nil	0	[../net.c][320]do_read_conn: recv error: fd=9 errmsg=Connection reset by peer

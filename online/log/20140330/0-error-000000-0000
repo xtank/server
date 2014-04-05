@@ -1,0 +1,2 @@
+2014-03-30 00:07:00	LOGHEAD	5062	mole-nil-192.168.206.128
+2014-03-30 00:07:00	nil	0	[../net.c][317]do_read_conn: connection [fd=10 ip=0x8A02A8C0] closed by peer

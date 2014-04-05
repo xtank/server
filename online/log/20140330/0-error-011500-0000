@@ -1,0 +1,4 @@
+2014-03-30 01:16:32	LOGHEAD	7914	xtank-nil-192.168.134.129
+2014-03-30 01:16:32	nil	0	[../net.c][317]do_read_conn: connection [fd=8 ip=0x2F01000A] closed by peer
+2014-03-30 01:19:33	LOGHEAD	8239	xtank-nil-192.168.134.129
+2014-03-30 01:19:33	nil	0	[../net.c][317]do_read_conn: connection [fd=8 ip=0x2F01000A] closed by peer

@@ -1,0 +1,145 @@
+CC = g++
+WORKDIR = ../
+SRCDIR = $(WORKDIR)/src
+LIBDIR = $(WORKDIR)/lib
+OBJDIR = $(WORKDIR)/obj
+DEPDIR = $(WORKDIR)/obj
+INCLUDEDIR = $(WORKDIR)/src
+BINDIR = $(WORKDIR)/bin
+TARGET = $(BINDIR)/libonline.so
+DATA_TARGET = $(BINDIR)/libdata.so
+PROTODIR = $(WORKDIR)/../proto
+PROTOBUF_CFLAGS = $(shell pkg-config --cflags protobuf)
+PROTOBUF_LFLAGS = $(shell pkg-config --libs protobuf)
+
+LIB_CLIENT_DIR = $(PROTODIR)/client
+LIB_CLIENT_PROTO = $(LIB_CLIENT_DIR)/libclientproto.a
+LIB_CLIENT_MAKEFILE_DIR = $(LIB_CLIENT_DIR)/define
+LIB_HOME_DIR = $(PROTODIR)/home_svr
+LIB_HOME_PROTO = $(LIB_HOME_DIR)/libhomeproto.a
+LIB_HOME_MAKEFILE_DIR = $(LIB_HOME_DIR)/define
+LIB_DB_DIR = $(PROTODIR)/db
+LIB_DB_PROTO = $(LIB_DB_DIR)/libdbproto.a
+LIB_DB_MAKEFILE_DIR = $(LIB_DB_DIR)/define
+LIB_SWITCH_DIR = $(PROTODIR)/switch
+LIB_SWITCH_PROTO = $(LIB_SWITCH_DIR)/libswitchproto.a
+LIB_SWITCH_MAKEFILE_DIR = $(LIB_SWITCH_DIR)/
+LIB_BATTLE_DIR = $(PROTODIR)/battle
+LIB_BATTLE_PROTO = $(LIB_BATTLE_DIR)/libbtlproto.a
+LIB_BATTLE_MAKEFILE_DIR = $(LIB_BATTLE_DIR)/define
+LIB_FAMILY_DIR = $(PROTODIR)/family
+LIB_FAMILY_PROTO = $(LIB_FAMILY_DIR)/libfamilyproto.a
+LIB_FAMILY_MAKEFILE_DIR = $(LIB_FAMILY_DIR)/define
+
+LIB_CACHE_DIR = $(PROTODIR)/cache
+LIB_CACHE_PROTO = $(LIB_CACHE_DIR)/libcacheproto.a
+LIB_CACHE_MAKEFILE_DIR = $(LIB_CACHE_DIR)/define
+
+STATLOGGER_DIR = $(WORKDIR)/../statlogger
+
+CFLAGS = -Wall -Werror -fPIC -ggdb \
+	-Iinclude -I/usr/local/lib/glib-2.0/include/ -I/usr/local/include/glib-2.0 \
+	-I/usr/lib/glib-2.0/include/ -I/usr/include/glib-2.0 \
+	-I$(WORKDIR)/../ -I/usr/include/libxml2 \
+	-DUSE_TLOG -DENABLE_TRACE_LOG -I./ -I./operation_201312 \
+	-I./operation_201402 -I./operation_201403
+LFLAGS = -Wall -Werror -ggdb \
+	-L$(LIBDIR) -L$(LIB_CLIENT_DIR) -L$(LIB_DB_DIR) -L $(LIB_SWITCH_DIR) -L$(LIB_BATTLE_DIR) \
+	-L$(LIB_FAMILY_DIR) -L$(LIB_HOME_DIR) -L$(LIB_CACHE_DIR) -L$(STATLOGGER_DIR) \
+	-L./operation_201312 -L./operation_201402 -L./operation_201403\
+	-lcrypto -pthread -lpthread -lm \
+	-lclientproto -lxml2 \
+	-lswitchproto -lbtlproto -lfamilyproto -lhomeproto -lcacheproto -lstatlogger \
+	-loperation_201312 -loperation_201402 -loperation_201403\
+	-ldbproto -ltaomee -ltaomee++
+
+ALL_SRCS = $(wildcard $(SRCDIR)/*.cpp)
+DATA_SRCS = $(shell ls $(SRCDIR)/global_data.cpp)
+SRCS = $(shell ls -I "global_data*" $(SRCDIR)/*.cpp)
+HEADERS = $(wildcard $(INCLUDEDIR)/*.h)
+OBJS := $(patsubst %.cpp,%.o,$(subst $(SRCDIR),$(OBJDIR),$(SRCS)))
+OBJS := $(subst $(OBJDIR)/global_data.o,,$(OBJS))
+DATA_OBJS := $(patsubst %.cpp,%.o,$(subst $(SRCDIR),$(OBJDIR),$(DATA_SRCS)))
+DEPS := $(patsubst %.cpp,%.d,$(subst $(SRCDIR),$(DEPDIR),$(SRCS)))
+
+all: client_proto db_proto switch_proto battle_proto family_proto home_proto cache_proto \
+	operation201312 operation201402 operation201403 \
+	$(TARGET) $(DATA_TARGET)
+	cp ../../proto/client/define/attribute.xml ../design-conf/
+
+#all: $(TARGET)
+
+$(DATA_TARGET): $(DATA_OBJS)
+	g++ -shared -o $(DATA_TARGET) $(DATA_OBJS) $(LFLAGS) /usr/lib/libprotobuf.a
+
+$(TARGET): $(LIB_CLIENT_PROTO) $(LIB_DB_PROTO) $(LIB_SWITCH_PROTO) \
+		$(LIB_BATTLE_PROTO) $(LIB_FAMILY_PROTO) $(LIB_HOME_PROTO) \
+		$(LIB_CACHE_PROTO) $(OBJS) ./operation_201312/liboperation_201312.a \
+		./operation_201402/liboperation_201402.a \
+		./operation_201403/liboperation_201403.a
+	g++ -shared -o $(TARGET) $(OBJS) $(LFLAGS) /usr/lib/libprotobuf.a
+
+operation201312:
+	make -C ./operation_201312
+
+operation201402:
+	make -C ./operation_201402
+
+operation201403:
+	make -C ./operation_201403
+
+
+client_proto: 
+	make -C $(LIB_CLIENT_MAKEFILE_DIR)
+
+db_proto: 
+	make -C $(LIB_DB_MAKEFILE_DIR)
+
+switch_proto: 
+	make -C $(LIB_SWITCH_MAKEFILE_DIR)
+
+battle_proto:
+	make -C $(LIB_BATTLE_MAKEFILE_DIR)
+
+family_proto:
+	make -C $(LIB_FAMILY_MAKEFILE_DIR)
+
+home_proto:
+	make -C $(LIB_HOME_MAKEFILE_DIR)
+
+cache_proto:
+	make -C $(LIB_CACHE_MAKEFILE_DIR)
+
+#由于obj生成在$(OBJDIR)中，在依赖关系中加入目录
+$(DEPDIR)/%.d: $(SRCDIR)/%.cpp  
+	@echo "generate $@"
+	@printf "$(OBJDIR)/" > $@.tmp
+	@$(CC) -MM $< $(CFLAGS) >> $@.tmp
+	@mv $@.tmp $@
+	
+sinclude $(DEPS)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp 
+	$(CC) -c $< -o $@ $(CFLAGS)
+
+clean:
+	-rm $(OBJS) $(TARGET) $(DEPS) $(DATA_TARGET)
+
+clean-target:
+	-rm $(TARGET) 
+
+clean-proto: 
+	-rm $(LIB_CLIENT_PROTO) $(LIB_DB_PROTO) $(LIB_SWITCH_PROTO) $(LIB_BATTLE_PROTO) $(LIB_FAMILY_PROTO) 
+	-rm $(LIB_HOME_PROTO) $(LIB_CACHE_PROTO)
+
+clean-all: clean
+	make -C $(LIB_CLIENT_MAKEFILE_DIR) clean
+	make -C $(LIB_DB_MAKEFILE_DIR) clean
+	make -C $(LIB_SWITCH_MAKEFILE_DIR) clean
+	make -C $(LIB_BATTLE_MAKEFILE_DIR) clean
+	make -C $(LIB_FAMILY_MAKEFILE_DIR) clean
+	make -C $(LIB_HOME_MAKEFILE_DIR) clean
+	make -C $(LIB_CACHE_MAKEFILE_DIR) clean
+	make -C operation_201312 clean
+	make -C operation_201402 clean
+	make -C operation_201403 clean

@@ -1,0 +1,487 @@
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
+
+#include "common.h"
+//#include <libtaomee/timer.h>
+//#include <libtaomee/project/types.h>
+
+#include <map>
+#include "miracle.h"
+#include "item.h"
+#include "shop.h"
+#include "proto/client/pet.pb.h"
+#include "proto/family/famproto.family.pb.h"
+#include "proto/db/dbproto.fightking.pb.h"
+#include "proto/client/fightking.pb.h"
+#include "arena.h"
+
+struct fightking_user_info_t
+{
+    uint32_t rank;
+    uint32_t max_power;
+    uint32_t point;
+    uint32_t medal;
+    char nick[64];
+};
+
+typedef std::map<uint32_t, fightking_user_info_t> fightking_map_t;
+
+
+class Package;
+class BitInfo;
+class TaskInfo;
+struct equip_info_t;
+class Pet;
+class Tactic;   
+class Attr;
+struct InviteFightInfo;
+struct miracle_wipe_info_t;
+class Friend;
+class RuneMeseum;
+class home_data_t;
+class farm_t;
+class Achieve;
+struct temp_info_t;
+class Msgbox;
+class ProtoQueue;
+struct player_t;
+
+const uint32_t kMaxPlayerPetNum = 20;
+const uint32_t kMaxProtoQueueSize = 30; // 最多缓存数量
+const uint32_t kMaxSignatureLen = 70;//签名最长
+const uint32_t kSysPlayerTacticId = 5; //系统精灵战术阵id
+const uint32_t kFightkingTacticId = 6; //王者之战战术阵id
+const uint32_t kBeFriendTacticId = 7; //和我做朋友战术阵id
+
+//注意：任何在begin和end之间的tactic-type在现有逻辑中都
+//等效的当作cur-tactic处理
+enum tactic_type_t
+{
+    kTacticNormalBegin = 0,
+    kTacticNormalEnd = 4,
+    kTacticSys = 5,
+    kTacticFightking = 6,
+    kTacticBeFriend = 7,
+    kTacticThunderGodUltimate = 8, // 雷鸣突破极限
+    kTacticLvbu = 9, //吕布
+    kMaxPlayerTacticNum,
+};
+
+enum player_sex_t {
+    kSexGirl = 0,
+    kSexBoy = 1,
+};
+
+enum login_steps_t { //最多64个
+    login_steps_check_session = 1,
+    login_steps_get_active = 2,
+    login_steps_get_login_info = 3,
+    login_steps_get_money = 4,
+    login_steps_get_snowball_rank = 5,
+    login_steps_get_escort_info = 6,
+    login_steps_get_blood_exp_rank = 7,
+    login_steps_get_family_skills = 8,
+    login_steps_get_hot_rich_rank = 9,
+};
+
+// 不需要存档的一些内存数据
+struct temp_info_t
+{
+    uint32_t luoluo_challenge_type;
+    uint32_t last_chat_time;
+    //拉取守卫排名列表时 先要去拉取自己的排名
+    //故需要缓存排名列表的拉取信息
+    uint32_t treasure_defend_get_rank_start;
+    uint32_t treasure_defend_get_rank_cnt;
+    //记录当次守卫(断线后算一次,不记录存档)遇到的敌人波数
+    uint32_t treasure_defend_battle_waves;
+    //玩家是否在守卫宝藏的状态中 
+    uint8_t player_status_in_treasure_defend;
+    //保存守关人的战斗信息
+    std::string *defender_battle_info;
+    //保存守关野怪的ID
+    uint32_t defender_monster_id;
+    //保存守关人的ID
+    uint32_t defender_userid;
+    //当次守卫宝藏总共漏掉的敌人精灵数
+    uint32_t defender_alive_opponent_pets;
+    //当前回合限制
+    uint32_t defender_round_limit;
+    // 上一次获取session时间
+    uint32_t last_get_session_time;
+
+    uint32_t get_rank_start;
+    uint32_t get_rank_cnt;
+    uint32_t get_self_rank;
+    std::string *rank_info;
+
+    struct timeval db_request_time; // 请求db时的时间
+    struct timeval client_request_time; // client请求时间
+    uint32_t talent_improve_pet_catch_time;//进行天赋提升的精灵
+    uint32_t last_arena_my_rank; // 上次拉取到的竞技场排名
+    uint32_t last_arena_def_num; // 上次拉取到的对手数量
+    uint32_t last_arena_def_ranks[kMaxArenaPlayerNum];  // 上次拉取到的对手的排名
+    
+    uint32_t refuse_battle_timer_inviter_id; //自动拒绝对战定时器需要使用的uid 
+
+    bool is_fast_reclaim; //开垦的时候记录是否快速开垦荒地
+    uint32_t speedup_records[5]; // 最近5次是否使用加速器
+
+    //运宝相关
+    uint32_t escort_start_time;
+    uint32_t escort_be_robbed_num;
+    uint32_t escort_be_robbed_money;
+    uint32_t escort_be_robbed_time;
+    bool is_escort_get_ship;
+
+    //沙漠寻宝
+    uint32_t desert_treasure_monsterid;
+
+    int32_t stone_game_start_tm; //小石头游戏的开始时间
+    int32_t stone_challenge_kk_rounds;
+
+    //沙漠神灯
+    bool desert_lantern_is_game_win;//猜拳胜利
+    bool desert_lantern_is_game_start;//猜拳开始
+
+    //保存一下加关注玩家id，防止刷加关注
+    uint32_t friend_be_added[20];
+
+    bool login_too_much; // 是否登录过多，需要回答问题
+    uint32_t login_too_much_answer;  // 登录次数过多问题答案
+    uint32_t login_too_much_answer_times; // 回答次数
+
+    //沙漠访客
+    bool can_get_bonus;
+
+    //艾露挑战魔王三手下 当前挑战的手下的idx 1、2、3
+    attr_type_t attr_ailu_cur_chlg_mon_idx;
+
+    //美食三杰-jerry 是否可以打野怪
+    bool food_jerry_can_fight_monster;
+    int32_t last_game_start_tm;
+    uint32_t last_game_type;
+    bool can_use_bean; //能否继续使用精灵豆(当发出一个精灵豆购买请求DB未返回时 不可以继续使用)
+    
+    uint32_t last_map_id; //上一个地图ID
+    //雪球大战
+    uint32_t battle_field_id;
+    uint32_t last_snowball_rank;
+    uint32_t last_snowball_kill;
+    uint32_t req_prize_id;
+    uint32_t last_req_snowball_rank_tm;
+    uint32_t last_get_self_snowball_rank;
+
+    // 神谕之光 - 沐浴圣光
+    bool is_god_light_bathe_start; 
+    uint32_t last_god_light_bathe_time; // 上次沐浴时间
+
+    //恶魔的回路
+    uint32_t last_morgan_state; //摩根上一次的削弱状态
+
+    // 报名家族战的领地
+    int family_battle_domain;
+
+    //王者之战
+
+    //dbproto::sc_fight_king_get_tactic* invitee_tactic;
+    std::string* invitee_tactic;
+    uint32_t invitee_point;
+    uint32_t invitee_userid;
+    uint32_t invitee_max_power;
+    int self_point_to_change;
+    uint32_t self_old_point;
+    uint32_t invitee_new_point;
+    uint32_t page;
+   
+    uint32_t fightking_count;
+//    onlineproto::sc_fightking_start_fight* start_fight;
+    std::string* start_fight;
+    fightking_map_t *fightking_map;
+    uint32_t fightking_vote_idx;
+    uint32_t fightking_vote_atk;
+    uint32_t invitee_old_point;
+    uint32_t invitee_old_rank;
+    bool is_yesterday_result;
+    uint32_t invitee_new_new_point;
+    std::string* fightking_public_info;
+
+    //你是我朋友
+    uint32_t you_friend_pet_chosen;
+    attr_type_t you_friend_empty_place;
+
+    //年兽 捕捉类型
+    uint32_t year_mon_2014_cap_type;
+    //新年在线红包
+    uint32_t online_bonus_is_bean;
+    bitset<1024> *bit_vec;
+
+    // 瞳孔中的恶魔
+    uint32_t solon_field_region; // 层级
+    uint32_t solon_field_weaken_level; // 削弱星级
+    uint32_t solon_field_play_game_times; // 是否玩过小游戏
+    uint32_t solon_field_buy_game_times; // 购买次数
+    bool is_fighting_solon_boss; // 是否开始挑战索伦副本boss
+
+    //高校庆典 学习力怪闹狂欢
+    uint32_t college_ceremony_refresh_cnt;
+    uint32_t college_ceremony_mon[5][3];//0是ID 1是学习力类型(1-7) 2是具体的学习力点数
+    uint32_t college_ceremony_fight_mon_idx;//选中的打的怪 必须是上面记录的5个怪的ID之一
+    bool college_ceremony_start;
+
+    bitset<64> *login_steps;
+
+    // 百万经验钓起来
+    bool is_start_fish_exp; // 是否开启垂钓小游戏
+    uint32_t get_fish_exp_times; // 获取经验次数
+    uint32_t get_fish_total_exp; // 获取经验总数
+    uint32_t fish_exp_pet; // 垂钓获取经验精灵
+
+    //迪菲路
+    bool difeilu_is_use_seckill;
+    uint32_t difeilu_luzhi_cost;
+
+    //吕布挑战boss3
+    uint32_t lvbu_boss3_idx;
+};
+
+struct player_t
+{
+    userid_t userid; // 米米号
+    bool is_login; // 是否已经登录
+    int fd; // 客户端fd
+    uint32_t seqno; // 协议序列号
+    char nick[50];
+    uint32_t create_time; // 创建时间
+    struct fdsession* fdsession; // async_serv 和客户端通信session
+    char family_name[64]; // 家族名称
+    uint32_t family_icon; // 家族图标
+    uint32_t wait_cmd; // 客户端请求命令号
+    uint32_t wait_serv_cmd; // 等待服务端的命令号
+    uint32_t serv_cmd; // 请求服务端命令号
+    Package* package; // 每个类型一个背包
+    BitInfo* bit_info; //用户的bit信息
+    TaskInfo* task_info; // 用户任务信息
+    equip_info_t equip_info; // 装备信息
+    uint32_t cur_map_id; // 当前地图id
+    uint32_t cur_map_line_id; //当前所在的地图分线
+    uint32_t map_x; // 地图坐标x
+    uint32_t map_y; // 地图坐标y
+    bool sex; // 1 男 0 女
+    uint32_t bean; //余钱
+    std::map<uint32_t, Pet> *pets; // 所有精灵
+    std::map<uint32_t, Pet*> *bag_pets; //背包精灵
+    std::map<uint32_t, Pet*> *store_pets; //仓库精灵
+    std::map<uint32_t, Pet*> *elite_pets; //精英精灵
+    std::map<uint32_t, Pet*> *room_pets; //精灵屋精灵
+    std::map<uint32_t, Pet*> *sys_pets; //系统精灵
+    std::map<uint32_t, Pet*> *pre_abandon_pets; //放生精灵
+    std::map<uint32_t, std::vector<Pet*> > *petid_pets; // petid对应的精灵
+    uint32_t max_bag_pet_pos; // 背包精灵位置计数器
+
+    Pet *follow_pet;    //跟随精灵
+    //是否在度假
+    bool is_on_vocation; // 是否在度假
+    bool is_on_vocation_with_chair; // 是否在使用躺椅
+    uint32_t last_vocation_pet_catch_tm; //上一个度假精灵的捕获时间
+    //Pet* pets; // 精灵数组
+    Tactic* tactics; // 阵型
+    uint32_t cur_tactic_id; // 当前阵型
+    Attr* attrs; //各种基本数据
+    InviteFightInfo* invite_other_info; // 邀请对战信息
+    InviteFightInfo* invited_by_other_info; // 被邀请信息
+    miracle_wipe_info_t miracle_wipe_info; // 奇迹之路扫荡信息
+    uint32_t cur_use_item_id; //目前使用item
+    Friend* friends; // 好友 
+    RuneMeseum* rune_meseum; //符文背包  
+    list_head_t timer_list; // 用户定时器列表
+    timer_struct_t* sync_client_time_timer; // 同步客户端时间定时器
+    timer_struct_t* save_cur_battle_value_time_timer;//定时保存战斗力数值定时器
+    timer_struct_t *daily_op_timer; //每日12点做一些操作(如果在线的话)
+    timer_struct_t* db_request_timer; // 请求db的定时器
+    timer_struct_t* clear_daily_attr_timer; // 清理每日属性定时器
+    timer_struct_t* clean_expired_items_timer; // 定期清理过期道具
+    timer_struct_t* refuse_invite_battle_timer;// 一定时候后拒绝对战邀请
+    timer_struct_t* pet_exercise_add_exp_timer; // 精灵锻炼，每过一段时间增加经验
+    timer_struct_t* check_escort_end_timer; // 检查运宝是否结束
+    timer_struct_t* check_bean_return; //检查向DB请求的精灵豆是否正常返回
+    timer_struct_t* listen_hotspring_bath; //精灵泡温泉结束监听
+    timer_struct_t* alive_timer; // 手机客户端生存定时器
+
+    //雪球大战的定时器
+    timer_struct_t* snowball_born_protect_timer; //雪球大战出生保护定时器
+    timer_struct_t* snowball_dead_alive_timer; //雪球大战死亡后复活的定时器
+
+    home_data_t *home_data;
+    farm_t *farm_data;
+    Achieve* achieves;
+    uint32_t treasure_defend_rank;
+    temp_info_t temp_info; // 临时数据
+    ProtoQueue* proto_queue; // 缓存未及时处理的协议
+    char signature[kMaxSignatureLen];//用户签名哟
+    uint32_t cur_warrior_challenge_mon;//当前勇者试炼挑战的boss_id;
+    uint32_t last_battle_time; // 上次对战时间
+    uint32_t verify_image_answer; // 战斗验证码答案
+    std::map<uint32_t, uint32_t>* family_skill_levels; // 家族技能对应的等级
+    
+
+    /* 缓存session放在最后一个字段 */
+    char session[4096];  // 缓存
+};
+
+struct head_info_t
+{
+    uint32_t face; //脸
+    uint32_t hair; //头发
+};
+
+// 发送二进制buf流到客户端
+int send_buf_to_player(player_t* player, uint32_t cmd, const char* body, int bodylen);
+
+// 发送protobuf到客户端
+int send_msg_to_player(player_t* player, uint32_t cmd, const google::protobuf::Message& message);
+
+// 发送错误码到客户端
+int send_err_to_player(player_t* player, uint32_t cmd, const uint32_t ret);
+
+// 初始化player内部相关内存
+int init_player(player_t* player);
+
+// 玩家离开服务器
+int player_leave_server(player_t* player);
+
+// 反初始化player内部相关内存
+int uninit_player(player_t* player);
+
+// 设置昵称
+void player_set_nick(player_t* player, const std::string& nick);
+
+// 设置家族名称
+void player_set_family_name(player_t* player, const std::string& family_name);
+
+//获取购买+赠送的精灵豆
+uint32_t player_get_bean(player_t *player);
+
+//改变精灵豆，赠送的精灵豆直接改变到属性值值 
+//扣减时先扣购买的精灵豆 再扣赠送的精灵豆
+//赠送精灵豆不走这个逻辑
+int player_chg_bean_and_sync(player_t *player, int32_t diff, 
+        const product_t *pd, uint32_t pd_cnt, 
+        dbproto::channel_type_t chn, bool sync_db=true);
+
+//设置购买的精灵豆
+void player_set_bean(player_t *player, uint32_t bean);
+
+inline bool is_valid_tactic_id(uint32_t tactic_id)
+{
+    if ((tactic_id >= 0 && tactic_id < kMaxPlayerTacticNum)) {
+        return true; 
+    } else {
+        return false; 
+    }
+}
+
+// 获取阵型
+Tactic* get_tactic_by_id(const player_t* player, int tactic_id);
+
+int db_save_base_info(player_t* player, bool wait);
+
+Tactic* get_cur_tactic(const player_t* player);
+
+Tactic* get_sys_tactic(const player_t* player);
+
+//获得当前战斗力
+int get_battle_value(player_t* player, 
+        onlineproto::synpower_reason_t max_power_reason = 
+        onlineproto::POWER_CHANGE_FROM_OTHER);
+//获取当前速度
+int get_user_speed(player_t* player);
+
+//将战斗力和被改变的精灵的战斗力推送到服务器，pets_changed可以为NULL
+//增加将速度推送到服务器
+int push_value_to_client_by_petid(
+        player_t* player, std::vector<uint32_t>* pets_changed, 
+        onlineproto::synpower_reason_t syncpower_reason = onlineproto::POWER_CHANGE_FROM_OTHER);
+
+int push_value_to_client_by_pet(player_t* player, Pet& pet, 
+        onlineproto::synpower_reason_t syncpower_reason = onlineproto::POWER_CHANGE_FROM_OTHER);
+
+// 保存家族名称
+int db_save_family_name_nowait(player_t* player);
+
+//从缓存服务器中拉取用户信息，异步操作
+int get_users_info_from_cache(player_t* player, std::vector<uint32_t> userid_list);
+
+// 计算当天用户上线时间
+uint32_t calc_daily_online_time(player_t* player);
+
+// 计算当天用户下线时间
+uint32_t calc_daily_offline_time(player_t* player);
+
+bool is_vip(const player_t* player);
+
+uint32_t get_vip_grade(const player_t* player);
+
+void encrypt_msg(unsigned char* msg, int msglen, uint32_t uid = 0);
+
+void decrypt_msg(unsigned char* msg, int msglen, uint32_t uid = 0);
+
+uint32_t calc_seqno(uint32_t pkg_len, uint32_t seqno, uint16_t cmd);
+
+uint32_t get_user_buffid(attr_type_t attr_type);
+
+uint32_t calc_daily_online_time_clean_by_day(player_t* player);
+
+bool check_player_addicted(player_t* player);
+
+void finish_module(player_t *player);
+
+uint32_t get_user_daily_buffid(attr_type_t attr_type);
+//
+int send_sys_err(player_t* player);
+int send_parse_err(player_t* player);
+int send_default_cmd_err(player_t* player, uint32_t err);
+int send_default_cmd_msg(player_t* player, const google::protobuf::Message& message);
+int send_game_count_err(player_t* player);
+int send_game_cd_err(player_t* player);
+
+// 获取家族技能
+uint32_t get_family_skill_level(player_t* player, uint32_t skill_id);
+// 清除家族技能
+void clear_family_skill_list(player_t* player);
+// 更新家族技能
+void update_family_skill_level(player_t* player, uint32_t skill_id, uint32_t level);
+// 获取学习过的家族技能效果
+uint32_t get_study_family_skill_effect(player_t* player, uint32_t skill_id);
+
+uint32_t player_get_gold(player_t *player);
+
+//发送家族操作指令
+int send_family_operate_msg(player_t* player, uint32_t family_id, 
+        famproto::family_operate_type type, 
+        const google::protobuf::Message& message);
+
+//给其他用户增加attr值
+//有需要的话可以在里面添加同步其他online的功能
+//我还没这个需求
+//擦，还是我自己实现算了
+//也可以减
+int add_attr_value_to_other_player(uint32_t your_uid, uint32_t others_uid, 
+        attr_type_t type, uint32_t value, uint32_t max_value, bool is_minus = false);
+
+
+//将最高战斗力发到ranking服务器
+int send_max_battle_value_to_ranking(uint32_t userid, uint32_t value);
+
+// 是否是当年的年费vip
+bool is_this_year_vip(const player_t* player);
+
+//玩家登录的某个流程是否完成
+bool is_login_step_finished(player_t *player, login_steps_t step);
+void set_login_step_finished(player_t *player, login_steps_t step);
+
+/*
+//测试bit位
+bool test_bit_vec(player_t* player, enum onlineproto::player_mm_bit_state_t stat);
+*/
+#endif
