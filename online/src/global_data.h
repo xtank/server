@@ -14,11 +14,14 @@ extern "C" {
 }
 class ProtoProcessor;
 class PlayerManager;
+class RoomManager;
 // 玩家管理器
 extern PlayerManager* g_player_manager;
 
 // 命令处理器
 extern ProtoProcessor* g_proto_processor;
+
+extern RoomManager* g_room_manager;
 
 // online服务相关配置 
 //extern server_config_t g_server_config;

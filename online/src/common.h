@@ -59,8 +59,7 @@ extern "C" {
 #include "proto/client/cli_cmd.h"
 #include "proto/client/cli_errno.h"
 
-using namespace std;
+//using namespace std;
 
-struct player_t;
 
 #endif

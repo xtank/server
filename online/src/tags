@@ -18,12 +18,14 @@ DB_LOGIN_ACK_FLAG_WRONG_VERIFY_CODE	proto.h	99;"	d
 FOREACH	macro_utils.h	4;"	d
 FOREACH_NOINCR_ITER	macro_utils.h	10;"	d
 GLOBAL_DATA_H	global_data.h	3;"	d
+GetRoomListCmdProcessor	room_processor.h	/^class GetRoomListCmdProcessor : public CmdProcessorInterface$/;"	c
 INCLUDE	Makefile	/^INCLUDE =   -I\/usr\/include\/glib-2.0 -I\/usr\/lib\/glib-2.0\/include\/ -I..\/..\/ \\$/;"	m
 KeepLiveCmdProcessor	login_processor.h	/^class KeepLiveCmdProcessor : public CmdProcessorInterface$/;"	c
 LFLAGS	Makefile	/^LFLAGS 	= -L$(LIB_CLIENT_DIR) -lcrypto -lpthread -pthread -lm -ltaomee -ldl -lrt -lxml2 \\$/;"	m
 LIB_CLIENT_DIR	Makefile	/^LIB_CLIENT_DIR = $(PROTODIR)\/client$/;"	m
 LIB_CLIENT_PROTO	Makefile	/^LIB_CLIENT_PROTO = $(LIB_CLIENT_DIR)\/libclientproto.a$/;"	m
 LOGIN_PROCESSOR_H	login_processor.h	2;"	d
+LOGIN_PROCESSOR_H	room_processor.h	2;"	d
 LoginCmdProcessor	login_processor.h	/^class LoginCmdProcessor : public CmdProcessorInterface$/;"	c
 NOW	macro_utils.h	17;"	d
 OBJDIR	Makefile	/^OBJDIR = $(WORKDIR)\/obj$/;"	m
@@ -43,6 +45,9 @@ ProtoProcessor	proto_processor.cpp	/^ProtoProcessor::ProtoProcessor()$/;"	f	clas
 ProtoProcessor	proto_processor.h	/^class ProtoProcessor$/;"	c
 REVERSE_FOREACH	macro_utils.h	7;"	d
 REVERSE_FOREACH_NOINCR_ITER	macro_utils.h	13;"	d
+ROOM_MANAGER_H	room_manager.h	3;"	d
+RoomManager	room_manager.cpp	/^RoomManager::RoomManager()$/;"	f	class:RoomManager
+RoomManager	room_manager.h	/^class RoomManager$/;"	c
 SERVER_H	server.h	3;"	d
 SRCS	Makefile	/^SRCS = $(wildcard *.cpp)$/;"	m
 TARGETS	Makefile	/^TARGETS = $(BINDIR)\/libonline.so$/;"	m
@@ -50,12 +55,16 @@ WORKDIR	Makefile	/^WORKDIR = ..\/$/;"	m
 __COMMON_H__	common.h	2;"	d
 __MACRO_UTILS_H__	macro_utils.h	2;"	d
 __PLAYER_H__	player.h	2;"	d
+__PLAYER_H__	room.h	2;"	d
 add_player_to_fd_users	player_manager.cpp	/^void PlayerManager::add_player_to_fd_users(player_t *p, int fd)$/;"	f	class:PlayerManager
 alloc_player	player_manager.cpp	/^player_t* PlayerManager::alloc_player(int fd, userid_t userid)$/;"	f	class:PlayerManager
+alloc_room	room_manager.cpp	/^room_t* RoomManager::alloc_room(player_t* player, const std::string& name)$/;"	f	class:RoomManager
 banben_cli_proto_header_t	proto.h	/^struct banben_cli_proto_header_t$/;"	s
 battle_name	server.h	/^    char battle_name[256];$/;"	m	struct:server_config_t
 before_reload	server.cpp	/^extern "C" int before_reload(int isparent)$/;"	f
 checksum	proto.h	/^    uint32_t checksum;$/;"	m	struct:cli_proto_header_t
+cli_in_	room_processor.h	/^    onlineproto::cs_get_room_list cli_in_;  $/;"	m	class:GetRoomListCmdProcessor
+cli_out_	room_processor.h	/^    onlineproto::sc_get_room_list cli_out_;  $/;"	m	class:GetRoomListCmdProcessor
 cli_proto_header_t	proto.h	/^struct cli_proto_header_t$/;"	s
 cmd	proto.h	/^    uint16_t cmd;$/;"	m	struct:db_proto_header_t
 cmd	proto.h	/^    uint32_t cmd;$/;"	m	struct:banben_cli_proto_header_t
@@ -96,6 +105,7 @@ flag	proto.h	/^    uint32_t flag; $/;"	m	struct:db_login_with_verify_code_ack_t
 from_game	proto.h	/^    uint32_t from_game;$/;"	m	struct:db_check_session_req_t
 g_player_manager	global_data.cpp	/^PlayerManager* g_player_manager;$/;"	v
 g_proto_processor	global_data.cpp	/^ProtoProcessor* g_proto_processor;$/;"	v
+g_room_manager	global_data.cpp	/^RoomManager* g_room_manager;$/;"	v
 gameid	proto.h	/^    uint16_t gameid;$/;"	m	struct:db_login_with_verify_code_req_t
 gameid	proto.h	/^    uint32_t gameid; $/;"	m	struct:db_add_session_req_t
 gameid	proto.h	/^    uint32_t gameid; $/;"	m	struct:db_user_logout_req_t
@@ -107,6 +117,7 @@ get_player_by_fd	player_manager.cpp	/^player_t* PlayerManager::get_player_by_fd(
 get_player_by_userid	player_manager.cpp	/^player_t* PlayerManager::get_player_by_userid(userid_t userid)$/;"	f	class:PlayerManager
 get_player_list	player_manager.cpp	/^void PlayerManager::get_player_list(std::vector<player_t*>& player_list)$/;"	f	class:PlayerManager
 get_processor	proto_processor.cpp	/^CmdProcessorInterface* ProtoProcessor::get_processor(uint32_t cmd)$/;"	f	class:ProtoProcessor
+get_room_by_id	room_manager.cpp	/^room_t* RoomManager::get_room_by_id(int id)$/;"	f	class:RoomManager
 get_userid_list	player_manager.cpp	/^void PlayerManager::get_userid_list(std::vector<userid_t>& userid_list)$/;"	f	class:PlayerManager
 home_svr_name	server.h	/^    char home_svr_name[256];$/;"	m	struct:server_config_t
 id_users_	player_manager.h	/^    std::map<userid_t, player_t *> id_users_; \/\/ 米米号映射player$/;"	m	class:PlayerManager
@@ -120,6 +131,14 @@ ip	proto.h	/^    uint32_t ip;$/;"	m	struct:db_add_session_req_t
 ip	proto.h	/^    uint32_t ip;$/;"	m	struct:db_check_session_req_t
 ip	proto.h	/^    uint32_t ip;$/;"	m	struct:db_login_with_verify_code_req_t
 is_active	proto.h	/^    uint8_t is_active;$/;"	m	struct:db_is_active_ack_t
+kInsideBusy	player.h	/^    kInsideBusy = 4,$/;"	e	enum:room_player_status_t
+kInsideFree	player.h	/^    kInsideFree = 2,$/;"	e	enum:room_player_status_t
+kInsideReady	player.h	/^    kInsideReady = 3,$/;"	e	enum:room_player_status_t
+kOutside	player.h	/^    kOutside = 1,$/;"	e	enum:room_player_status_t
+kRoomBusy	room.h	/^    kRoomBusy = 3, $/;"	e	enum:room_status_t
+kRoomFree	room.h	/^    kRoomFree = 0,$/;"	e	enum:room_status_t
+kRoomFull	room.h	/^    kRoomFull = 1,$/;"	e	enum:room_status_t
+kRoomReady	room.h	/^    kRoomReady = 2, $/;"	e	enum:room_status_t
 len	proto.h	/^    uint32_t len;   $/;"	m	struct:db_proto_header_t
 len	proto.h	/^    uint32_t len;$/;"	m	struct:banben_cli_proto_header_t
 len	proto.h	/^    uint32_t len;$/;"	m	struct:cli_proto_header_t
@@ -128,21 +147,25 @@ login_channel	proto.h	/^    uint16_t login_channel;$/;"	m	struct:db_login_with_v
 login_promot_tag	proto.h	/^    char login_promot_tag[128];$/;"	m	struct:db_login_with_verify_code_req_t
 login_time	proto.h	/^    uint32_t login_time;$/;"	m	struct:db_user_logout_req_t
 logout_time	proto.h	/^    uint32_t logout_time;$/;"	m	struct:db_user_logout_req_t
+name	room.h	/^    std::string name;$/;"	m	struct:room_t
 on_client_conn_closed	server.cpp	/^extern "C" void on_client_conn_closed(int fd)$/;"	f
 on_fd_closed	server.cpp	/^extern "C" void on_fd_closed(int fd)$/;"	f
 parse_message	cmd_processor_interface.h	/^inline int parse_message($/;"	f
 passwd_md5_two	proto.h	/^    char passwd_md5_two[16];$/;"	m	struct:db_login_with_verify_code_req_t
 player_leave_server	player.cpp	/^int player_leave_server(player_t* player)$/;"	f
 player_t	player.h	/^struct player_t$/;"	s
+player_vec	room.h	/^    std::vector<player_t*> player_vec;$/;"	m	struct:room_t
 proc_events	server.cpp	/^extern "C" void proc_events()$/;"	f
 proc_mcast_pkg	server.cpp	/^extern "C" void proc_mcast_pkg(const void* data, int len)$/;"	f
 proc_pkg_from_client	login_processor.cpp	/^int KeepLiveCmdProcessor::proc_pkg_from_client($/;"	f	class:KeepLiveCmdProcessor
 proc_pkg_from_client	login_processor.cpp	/^int LoginCmdProcessor::proc_pkg_from_client($/;"	f	class:LoginCmdProcessor
 proc_pkg_from_client	proto_processor.cpp	/^int ProtoProcessor::proc_pkg_from_client(void* data, int len,$/;"	f	class:ProtoProcessor
+proc_pkg_from_client	room_processor.cpp	/^int GetRoomListCmdProcessor::proc_pkg_from_client($/;"	f	class:GetRoomListCmdProcessor
 proc_pkg_from_client	server.cpp	/^extern "C" int  proc_pkg_from_client(void* data, int len, fdsession_t* fdsess)$/;"	f
 proc_pkg_from_serv	login_processor.cpp	/^int KeepLiveCmdProcessor::proc_pkg_from_serv($/;"	f	class:KeepLiveCmdProcessor
 proc_pkg_from_serv	login_processor.cpp	/^int LoginCmdProcessor::proc_pkg_from_serv($/;"	f	class:LoginCmdProcessor
 proc_pkg_from_serv	proto_processor.cpp	/^void ProtoProcessor::proc_pkg_from_serv(int fd, void* data, int len)$/;"	f	class:ProtoProcessor
+proc_pkg_from_serv	room_processor.cpp	/^int GetRoomListCmdProcessor::proc_pkg_from_serv($/;"	f	class:GetRoomListCmdProcessor
 proc_pkg_from_serv	server.cpp	/^extern "C" void proc_pkg_from_serv(int fd, void* data, int len)$/;"	f
 ranking_ip	server.h	/^    char ranking_ip[20];$/;"	m	struct:server_config_t
 ranking_port	server.h	/^    int ranking_port;$/;"	m	struct:server_config_t
@@ -153,6 +176,13 @@ reload_global_data	server.cpp	/^extern "C" int reload_global_data()$/;"	f
 ret	proto.h	/^    uint32_t ret;$/;"	m	struct:banben_cli_proto_header_t
 ret	proto.h	/^    uint32_t ret;$/;"	m	struct:cli_proto_header_t
 ret	proto.h	/^    uint32_t ret;$/;"	m	struct:db_proto_header_t
+room_id	room.h	/^    uint32_t room_id;$/;"	m	struct:room_t
+room_idx	room_manager.h	/^    uint32_t room_idx;$/;"	m	class:RoomManager
+room_player_status_t	player.h	/^enum room_player_status_t{$/;"	g
+room_status_t	room.h	/^enum room_status_t{$/;"	g
+room_t	room.h	/^struct room_t$/;"	s
+roomid	player.h	/^    uint32_t roomid;$/;"	m	struct:player_t
+rooms_list_	room_manager.h	/^    std::map<int, room_t *> rooms_list_; \/\/ fd映射player$/;"	m	class:RoomManager
 sc_enter_server_	login_processor.h	/^    onlineproto::sc_enter_server sc_enter_server_;$/;"	m	class:LoginCmdProcessor
 sc_keep_live_	login_processor.h	/^    onlineproto::sc_keep_live sc_keep_live_;$/;"	m	class:KeepLiveCmdProcessor
 security_code	server.h	/^    char security_code[10];$/;"	m	struct:server_config_t
@@ -172,6 +202,8 @@ session	proto.h	/^    char session[16];$/;"	m	struct:db_add_session_ack_t
 session	proto.h	/^    char session[16];$/;"	m	struct:db_check_session_req_t
 start_function_timers	server.cpp	/^int start_function_timers()$/;"	f
 statistic_file	server.h	/^    char statistic_file[256];$/;"	m	struct:server_config_t
+status	player.h	/^    room_player_status_t status;$/;"	m	struct:player_t
+status	room.h	/^    room_status_t status;$/;"	m	struct:room_t
 switch_name	server.h	/^    char switch_name[256];$/;"	m	struct:server_config_t
 tad	proto.h	/^    char tad[128];$/;"	m	struct:db_check_session_req_t
 to_game	proto.h	/^    uint32_t to_game;$/;"	m	struct:db_check_session_req_t
@@ -188,3 +220,4 @@ wonderful_word_addr	server.h	/^    char wonderful_word_addr[256];$/;"	m	struct:s
 ~CmdProcessorInterface	cmd_processor_interface.h	/^    virtual ~CmdProcessorInterface() { }$/;"	f	class:CmdProcessorInterface
 ~PlayerManager	player_manager.cpp	/^PlayerManager::~PlayerManager()$/;"	f	class:PlayerManager
 ~ProtoProcessor	proto_processor.cpp	/^ProtoProcessor::~ProtoProcessor()$/;"	f	class:ProtoProcessor
+~RoomManager	room_manager.cpp	/^RoomManager::~RoomManager()$/;"	f	class:RoomManager

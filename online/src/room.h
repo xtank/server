@@ -1,5 +1,5 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef __ROOM_H__
+#define __ROOM_H__
 
 #include "common.h"
 #include "proto.h"
@@ -22,6 +22,8 @@ struct player_t;
 struct room_t
 {
     uint32_t room_id;
+    userid_t owner_id;
+    uint32_t map_id;
     room_status_t status;
     std::string name;
     std::vector<player_t*> player_vec;

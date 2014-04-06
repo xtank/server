@@ -1,6 +1,7 @@
 #include <async_serv/service.h>
 #include "global_data.h"
 #include "player_manager.h"
+#include "room_manager.h"
 #include "proto_processor.h"
 #include "login_processor.h"
 #include "common.h"
@@ -23,6 +24,7 @@ extern "C" int  init_service(int isparent)
         setup_timer();
         init_processors();
         g_player_manager = new PlayerManager(); 
+        g_room_manager = new RoomManager();
 	}
 
 	return 0;
