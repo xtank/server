@@ -85,4 +85,18 @@ uint32_t RoomManager::enter_room(player_t* player, uint32_t room_id) {
     return 0;
 }
 
+void RoomManager::dealloc_room(room_t* room)
+{
+    std::map<int, room_t*>::iterator it1;
+
+    it1 = room_list_.find(room->room_id);
+
+    if (it1 != room_list_.end()) {
+        room_list_.erase(it1); 
+    }
+
+    delete room;
+}
+
+
 

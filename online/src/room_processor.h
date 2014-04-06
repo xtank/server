@@ -1,5 +1,5 @@
-#ifndef LOGIN_PROCESSOR_H
-#define LOGIN_PROCESSOR_H
+#ifndef ROOM_PROCESSOR_H
+#define ROOM_PROCESSOR_H
 
 #include "proto/client/room.pb.h"
 #include "proto/client/online.pb.h"
@@ -34,6 +34,42 @@ private:
     onlineproto::cs_enter_room cli_in_;  
     onlineproto::sc_enter_room cli_out_;  
 
+};
+
+class LeaveRoomCmdProcessor : public CmdProcessorInterface
+{
+public:
+
+    int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+private:
+    onlineproto::cs_leave_room cli_in_;  
+    onlineproto::sc_leave_room cli_out_;  
+};
+
+class InsideReadyCmdProcessor : public CmdProcessorInterface
+{
+public:
+
+    int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+private:
+    onlineproto::cs_inside_ready cli_in_;  
+    onlineproto::sc_inside_ready cli_out_;  
+};
+
+class CreateRoomCmdProcessor : public CmdProcessorInterface
+{
+public:
+
+    int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+private:
+    onlineproto::cs_create_room cli_in_;  
+    onlineproto::sc_create_room cli_out_;  
 };
 
 #endif

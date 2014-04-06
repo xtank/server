@@ -15,6 +15,7 @@
 #include "proto/client/player.pb.h"
 
 #include<vector>
+#include<algorithm>
 
 
 void RoomUtils::send_room_update_msg(uint32_t roomid, uint32_t oper) {
@@ -24,12 +25,14 @@ void RoomUtils::send_room_update_msg(uint32_t roomid, uint32_t oper) {
     sc_notify_room_update_.set_oper(oper);
     room_t* room = g_room_manager->get_room_by_id(roomid);
 
-    if (room == NULL) {
+    if (room == NULL && oper != 2) {
         return ;
     }
 
-    onlineproto::room_data_t* room_data = sc_notify_room_update_.mutable_room();
-    DataProtoUtils::pack_room_data(room, room_data);
+    if (oper != 2) {
+        onlineproto::room_data_t* room_data = sc_notify_room_update_.mutable_room();
+        DataProtoUtils::pack_room_data(room, room_data);
+    }
 
     g_player_manager->send_msg_to_all_player(cli_cmd_cs_notify_room_update, sc_notify_room_update_);
 }
@@ -47,4 +50,54 @@ void RoomUtils::send_player_update_msg(player_t* player) {
     player_data->set_status(player->status);
 
     g_player_manager->send_msg_to_all_player(cli_cmd_cs_notify_player_update, sc_notify_player_update_);
+}
+
+
+void RoomUtils::player_levave_room(player_t* player) {
+
+    if (player == NULL) {
+        return;
+    }
+
+    uint32_t room_id = player->roomid;
+    room_t* room = g_room_manager->get_room_by_id(room_id);
+    if (room == NULL) {
+        return ;
+    }
+
+    if (room->player_vec.size() == 1) {
+
+        player->roomid = 0;
+        player->status = kOutside;
+
+        send_player_update_msg(player);
+        send_room_update_msg(room_id, kDelRoom);
+        g_room_manager->dealloc_room(room);
+    }
+    else if (player->userid == room->owner_id) {
+        for (uint32_t i = 0; i < room->player_vec.size(); i++) {
+            if (room->player_vec[i] != NULL) {
+                room->player_vec[i]->roomid = 0;
+                room->player_vec[i]->status = kOutside;
+
+                send_player_update_msg(room->player_vec[i]);
+            }
+
+            send_room_update_msg(room_id, kDelRoom);
+            g_room_manager->dealloc_room(room);
+        }
+    }
+    else {
+        player->roomid = 0;
+        player->status = kOutside;
+        send_player_update_msg(player);
+
+        std::vector<player_t*>::iterator iter = find(room->player_vec.begin(), room->player_vec.end(), player);
+
+        if (iter != room->player_vec.end()) {
+            room->player_vec.erase(iter);
+        }
+
+        send_room_update_msg(room_id, kUpdateRoom);
+    }
 }

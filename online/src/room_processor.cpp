@@ -66,7 +66,7 @@ int EnterRoomCmdProcessor::proc_pkg_from_client(
         return send_err_to_player(player, player->wait_cmd, ret);
     }
 
-    RoomUtils::send_room_update_msg(roomid, 0);
+    RoomUtils::send_room_update_msg(roomid, kUpdateRoom);
 
     RoomUtils::send_player_update_msg(player);
 
@@ -74,6 +74,93 @@ int EnterRoomCmdProcessor::proc_pkg_from_client(
 }
 
 int EnterRoomCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+int LeaveRoomCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    if (player->status == kOutside) {
+        return send_msg_to_player(player, player->wait_cmd, cli_out_);
+    }
+
+    RoomUtils::player_levave_room(player);
+       
+    return send_msg_to_player(player, player->wait_cmd, cli_out_);
+}
+
+int LeaveRoomCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+int InsideReadyCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    if (player->status != kInsideFree) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+    }
+
+    player->status = kInsideReady;
+
+    RoomUtils::send_room_update_msg(player->roomid, kUpdateRoom);
+    RoomUtils::send_player_update_msg(player);
+      
+    return send_msg_to_player(player, player->wait_cmd, cli_out_);
+}
+
+int InsideReadyCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+int CreateRoomCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    uint32_t mapid = cli_in_.map_id();
+    std::string name = cli_in_.name();
+
+    room_t* room = g_room_manager->alloc_room(player, name, mapid);
+    if (room == NULL) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_create_room_failed);
+    }
+
+
+    RoomUtils::send_room_update_msg(player->roomid, kAddRoom);
+    RoomUtils::send_player_update_msg(player);
+      
+    return send_msg_to_player(player, player->wait_cmd, cli_out_);
+}
+
+int CreateRoomCmdProcessor::proc_pkg_from_serv(
         player_t* player, const char* body, int bodylen)
 {
     return 0;

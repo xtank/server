@@ -4,6 +4,7 @@
 #include "room_manager.h"
 #include "proto_processor.h"
 #include "login_processor.h"
+#include "room_processor.h"
 #include "common.h"
 
 extern "C" {
@@ -130,6 +131,14 @@ int init_processors()
 {
     g_proto_processor->register_command(cli_cmd_cs_enter_srv, new LoginCmdProcessor());
     g_proto_processor->register_command(cli_cmd_cs_keep_live, new KeepLiveCmdProcessor());
+
+    //ROOM
+    g_proto_processor->register_command(cli_cmd_cs_get_room_list, new GetRoomListCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_enter_room, new EnterRoomCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_leave_room, new LeaveRoomCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_inside_ready, new InsideReadyCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_create_room, new CreateRoomCmdProcessor());
+
     return 0;
 }
 

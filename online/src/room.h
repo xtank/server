@@ -17,6 +17,12 @@ enum room_status_t{
     kRoomBusy = 3, 
 };
 
+enum room_oper_t{
+    kUpdateRoom = 0,
+    kAddRoom = 1,
+    kDelRoom = 2
+};
+
 struct player_t;
 
 struct room_t

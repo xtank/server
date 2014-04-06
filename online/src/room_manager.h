@@ -25,7 +25,9 @@ public:
 
     uint32_t enter_room(player_t* player, uint32_t room_id);
 
-    private:
+    void dealloc_room(room_t* room);
+
+private:
 
     uint32_t room_idx_;
     std::map<int, room_t *> room_list_;
