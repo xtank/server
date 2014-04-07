@@ -69,7 +69,9 @@ int send_msg_to_player(player_t* player, uint32_t cmd, const google::protobuf::M
 
 DEBUG_TLOG("SEND PKG TO CLIENT [u:%u cmd:%d hexcmd:0x%04x]", player->userid, header->cmd, header->cmd);
 
-    return send_pkg_to_client(player->fdsession, send_buf, header->len);
+    //return send_pkg_to_client(player->fdsession, send_buf, header->len);
+    int ret = send_pkg_to_client(player->fdsession, send_buf, header->len);
+    return ret;
 }
 
 int send_err_to_player(player_t* player, uint32_t cmd, const uint32_t ret)

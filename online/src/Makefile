@@ -3,6 +3,7 @@ CC = g++
 WORKDIR = ../
 BINDIR = $(WORKDIR)/bin
 OBJDIR = $(WORKDIR)/obj
+SRCDIR = $(WORKDIR)/src
 
 PROTODIR = $(WORKDIR)/proto
 LIB_CLIENT_DIR = $(PROTODIR)/client
@@ -18,8 +19,8 @@ LFLAGS 	= -L$(LIB_CLIENT_DIR) -lcrypto -lpthread -pthread -lm -ltaomee -ldl -lrt
 INCLUDE =   -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include/ -I../../ \
 			-I/usr/include/libxml2
 
-SRCS = $(wildcard *.cpp)
-OBJS = $(patsubst %.cpp, %.o, $(SRCS))
+SRCS = $(wildcard $(SRCDIR)/*.cpp)
+OBJS = $(subst $(SRCDIR), $(OBJDIR), $(patsubst %.cpp, %.o, $(SRCS)))
 TARGETS = $(BINDIR)/libonline.so
 
 all: $(TARGETS)
@@ -28,10 +29,18 @@ $(TARGETS): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBDIR) $(LFLAGS) $(PROTOBUF_LFLAGS)
 #	rm ../bin/$(TARGETS); mv $(TARGETS) ../bin/
 
-$(OBJS): %.o: %.cpp
-	$(CC) -c $(CFLAGS)  $(INCLUDE) $< -o $@
+#$(OBJS): %.o: %.cpp
+#	$(CC) -c $(CFLAGS)  $(INCLUDE) $< -o $@
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp 
+	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE) 
+
+
+src:
+	echo $(SRCS)
+	echo $(OBJS)
 
 clean:
-	rm -f *.o
+	rm -f ../obj/*.o
 	rm -f $(TARGETS)
 
