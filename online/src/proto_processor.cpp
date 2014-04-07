@@ -112,13 +112,15 @@ int ProtoProcessor::proc_pkg_from_client(void* data, int len,
         player->userid = header->ret;
         player->fd = fdsess->fd;
         player->fdsession = fdsess;
-        player->seqno = header->seq;
+        //player->seqno = header->seq;
     }
 
 TRACE_TLOG("GET PKG FROM CLIENT [u:%u cmd:%d hexcmd:0x%04x]", player->userid, header->cmd, header->cmd);
 DEBUG_TLOG("GET PKG FROM CLIENT [u:%u cmd:%d hexcmd:0x%04x]", player->userid, header->cmd, header->cmd);
 
     player->wait_cmd = header->cmd;
+    player->seqno = header->seq;
+
 
     std::map<uint32_t, CmdProcessorInterface *>::iterator it;
 
