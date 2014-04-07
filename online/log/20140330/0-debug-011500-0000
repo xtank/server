@@ -1,3 +1,0 @@
-2014-03-30 01:19:33	LOGHEAD	8239	xtank-nil-192.168.134.129
-2014-03-30 01:19:33	nil	0	discard the message: mb->type=0, fd=8, maxfd=6, id=4
-2014-03-30 01:23:40	nil	0	SIG_TERM from pid=8239
