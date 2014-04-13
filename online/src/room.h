@@ -31,8 +31,13 @@ struct room_t
     userid_t owner_id;
     uint32_t map_id;
     room_status_t status;
-    std::string name;
-    std::vector<player_t*> player_vec;
+    //std::string name;
+    char name[50];
+    std::vector<player_t*>* player_vec;
 };
+
+int init_room(room_t* room);
+int uninit_room(room_t* room);
+
 
 #endif

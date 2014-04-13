@@ -19,6 +19,7 @@ struct player_t
 {
     userid_t userid; // 米米号
     int fd; // 客户端fd
+    //char nick[50];
     uint32_t seqno; // 协议序列号
     struct fdsession* fdsession; // async_serv 和客户端通信session
     uint32_t wait_cmd; // 客户端请求命令号

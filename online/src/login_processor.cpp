@@ -51,7 +51,11 @@ int LoginCmdProcessor::proc_pkg_from_client(
     player_new->wait_cmd = player_temp->wait_cmd;
     player_new->seqno = player_temp->seqno;
 
+    //std::string nick = "player";
+    //strcpy(player_new->nick, nick.c_str());
+
     sc_enter_server_.set_userid(player_new->userid);
+    sc_enter_server_.set_name("player");
    
     return send_msg_to_player(player_new, player_new->wait_cmd, sc_enter_server_);
 }

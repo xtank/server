@@ -22,6 +22,9 @@ extern "C" int  init_service(int isparent)
 
 	if (!isparent) {
 
+        SET_LOG_LEVEL((tlog_lvl_t)/*tlog_lvl_trace*/config_get_intval("log_level", 6));
+        SET_TIME_SLICE_SECS(86400);
+
         setup_timer();
         init_processors();
         g_player_manager = new PlayerManager(); 

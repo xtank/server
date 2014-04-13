@@ -44,13 +44,16 @@ room_t* RoomManager::alloc_room(player_t* player, const std::string& name, uint3
         return NULL; 
     }
 
+    init_room(room);
+
     room_idx_++;
     room->room_id = room_idx_;
-    room->name = name;
+    //room->name = name;
+    strcpy(room->name, name.c_str());
     room->owner_id = player->userid;
     room->map_id = mapid;
 
-    room->player_vec.push_back(player);
+    room->player_vec->push_back(player);
 
 
     room_list_[room_idx_] = room;
@@ -80,7 +83,7 @@ uint32_t RoomManager::enter_room(player_t* player, uint32_t room_id) {
 
     player->status = kInsideFree;
     player->roomid = room_id;
-    room->player_vec.push_back(player);
+    room->player_vec->push_back(player);
 
     return 0;
 }
@@ -94,6 +97,8 @@ void RoomManager::dealloc_room(room_t* room)
     if (it1 != room_list_.end()) {
         room_list_.erase(it1); 
     }
+
+    uninit_room(room);
 
     delete room;
 }

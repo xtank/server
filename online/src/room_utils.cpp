@@ -65,7 +65,7 @@ void RoomUtils::player_levave_room(player_t* player) {
         return ;
     }
 
-    if (room->player_vec.size() == 1) {
+    if (room->player_vec->size() == 1) {
 
         player->roomid = 0;
         player->status = kOutside;
@@ -75,12 +75,12 @@ void RoomUtils::player_levave_room(player_t* player) {
         g_room_manager->dealloc_room(room);
     }
     else if (player->userid == room->owner_id) {
-        for (uint32_t i = 0; i < room->player_vec.size(); i++) {
-            if (room->player_vec[i] != NULL) {
-                room->player_vec[i]->roomid = 0;
-                room->player_vec[i]->status = kOutside;
+        for (uint32_t i = 0; i < room->player_vec->size(); i++) {
+            if (room->player_vec->at(i) != NULL) {
+                room->player_vec->at(i)->roomid = 0;
+                room->player_vec->at(i)->status = kOutside;
 
-                send_player_update_msg(room->player_vec[i]);
+                send_player_update_msg(room->player_vec->at(i));
             }
 
             send_room_update_msg(room_id, kDelRoom);
@@ -92,10 +92,10 @@ void RoomUtils::player_levave_room(player_t* player) {
         player->status = kOutside;
         send_player_update_msg(player);
 
-        std::vector<player_t*>::iterator iter = find(room->player_vec.begin(), room->player_vec.end(), player);
+        std::vector<player_t*>::iterator iter = find(room->player_vec->begin(), room->player_vec->end(), player);
 
-        if (iter != room->player_vec.end()) {
-            room->player_vec.erase(iter);
+        if (iter != room->player_vec->end()) {
+            room->player_vec->erase(iter);
         }
 
         send_room_update_msg(room_id, kUpdateRoom);
