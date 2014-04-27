@@ -8,6 +8,7 @@ extern "C" {
 }
 
 #include "room.h"
+#include "room_utils.h"
 #include "player.h"
 #include "room_manager.h"
 
@@ -57,7 +58,11 @@ room_t* RoomManager::alloc_room(player_t* player, const std::string& name, uint3
 
 
     room_list_[room_idx_] = room;
-    
+
+    player->roomid = room_idx_;
+    player->status = kInsideFree;
+    player->teamid = RoomUtils::select_team_id(room);
+
     return room;
 }
 
@@ -83,6 +88,8 @@ uint32_t RoomManager::enter_room(player_t* player, uint32_t room_id) {
 
     player->status = kInsideFree;
     player->roomid = room_id;
+    player->teamid = RoomUtils::select_team_id(room);
+
     room->player_vec->push_back(player);
 
     return 0;

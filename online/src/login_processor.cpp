@@ -91,4 +91,29 @@ int KeepLiveCmdProcessor::proc_pkg_from_serv(
     return 0;
 }
 
+//int CreateRoleCmdProcessor::proc_pkg_from_client(
+        //player_t* player, const char* body, int bodylen)
+//{
+    //cs_create_role_.Clear();
+    //sc_create_role_.Clear();
+
+    //if (parse_message(body, bodylen, &cs_keep_live_)) {
+        //return send_err_to_player(player, 
+                //player->wait_cmd, cli_err_proto_format_err);
+    //}
+
+    //uint32_t time = cs_keep_live_.time();
+
+    //sc_keep_live_.set_time(time);
+    //sc_keep_live_.set_server_time(NOW());
+   
+    //return send_msg_to_player(player, player->wait_cmd, sc_keep_live_);
+//}
+
+//int CreateRoleCmdProcessor::proc_pkg_from_serv(
+        //player_t* player, const char* body, int bodylen)
+//{
+    //return 0;
+//}
+
 

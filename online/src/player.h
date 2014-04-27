@@ -24,9 +24,15 @@ struct player_t
     struct fdsession* fdsession; // async_serv 和客户端通信session
     uint32_t wait_cmd; // 客户端请求命令号
 
+    uint32_t serv_cmd;
+    uint32_t wait_serv_cmd;
+
+    //login
+    bool is_login;
     //room info
     uint32_t roomid;
     room_player_status_t status;
+    uint32_t teamid;
 
     /* 缓存session放在最后一个字段 */
     char session[4096];  // 缓存

@@ -65,6 +65,15 @@ int EnterRoomCmdProcessor::proc_pkg_from_client(
     if (ret) {
         return send_err_to_player(player, player->wait_cmd, ret);
     }
+    room_t* room = g_room_manager->get_room_by_id(roomid);
+    if (room == NULL) {
+         return send_err_to_player(player, 
+                player->wait_cmd,  cli_err_room_not_exist);
+    }
+
+    //onlineproto::room_data_t* room_data = cli_out_.mutable_room();
+    //DataProtoUtils::pack_room_data(room, room_data);
+    cli_out_.set_roomid(roomid);
 
     RoomUtils::send_room_update_msg(roomid, kUpdateRoom);
 
@@ -122,7 +131,7 @@ int InsideReadyCmdProcessor::proc_pkg_from_client(
 
     player->status = kInsideReady;
 
-    RoomUtils::send_room_update_msg(player->roomid, kUpdateRoom);
+    //RoomUtils::send_room_update_msg(player->roomid, kUpdateRoom);
     RoomUtils::send_player_update_msg(player);
       
     return send_msg_to_player(player, player->wait_cmd, cli_out_);
@@ -153,6 +162,10 @@ int CreateRoomCmdProcessor::proc_pkg_from_client(
         return send_err_to_player(player, player->wait_cmd, cli_err_create_room_failed);
     }
 
+    //onlineproto::room_data_t* room_data = cli_out_.mutable_room();
+    //DataProtoUtils::pack_room_data(room, room_data);
+
+    cli_out_.set_roomid(room->room_id);
 
     RoomUtils::send_room_update_msg(player->roomid, kAddRoom);
     RoomUtils::send_player_update_msg(player);
@@ -161,6 +174,35 @@ int CreateRoomCmdProcessor::proc_pkg_from_client(
 }
 
 int CreateRoomCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+int CancelInsideReadyCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    if (player->status != kInsideReady) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+    }
+
+    player->status = kInsideFree;
+
+    //RoomUtils::send_room_update_msg(player->roomid, kUpdateRoom);
+    RoomUtils::send_player_update_msg(player);
+      
+    return send_msg_to_player(player, player->wait_cmd, cli_out_);
+}
+
+int CancelInsideReadyCmdProcessor::proc_pkg_from_serv(
         player_t* player, const char* body, int bodylen)
 {
     return 0;

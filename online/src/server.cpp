@@ -6,6 +6,10 @@
 #include "login_processor.h"
 #include "room_processor.h"
 #include "common.h"
+#include "server.h"
+#include "service.h"
+#include "timer_procs.h"
+#include "room_utils.h"
 
 extern "C" {
 #include <libtaomee/log.h>
@@ -14,7 +18,39 @@ extern "C" {
 }
 #include <libtaomee++/utils/strings.hpp>
 
+#define STRCPY_SAFE(buf, str) \
+    do { \
+        int buflen = sizeof(buf); \
+        buf[buflen - 1] = '\0';\
+        strncpy(buf, str, buflen - 1); \
+    } while (0);
+
+
+#define CONFIG_READ_INTVAL(data, name) \
+    do { \
+        int ret = -1; \
+        ret = config_get_intval(#name, ret); \
+        if (ret == -1) { \
+            ERROR_LOG("not find config '%s'", #name); \
+            return -1; \
+        } \
+        data.name = ret; \
+    } while (0);
+
+#define CONFIG_READ_STRVAL(data, name) \
+    do { \
+        const char *conf_str = NULL; \
+        conf_str = config_get_strval(#name); \
+        if (conf_str == NULL) { \
+            ERROR_LOG("not find config '%s'", #name); \
+            return -1; \
+        } \
+        STRCPY_SAFE(data.name, conf_str); \
+    } while (0);
+
 static int init_processors();
+static int init_connections();
+static int start_function_timers();
 
 extern "C" int  init_service(int isparent)
 {
@@ -29,6 +65,25 @@ extern "C" int  init_service(int isparent)
         init_processors();
         g_player_manager = new PlayerManager(); 
         g_room_manager = new RoomManager();
+
+        INIT_LIST_HEAD(&g_reconnect_timer.timer_list);
+
+        memset(&g_server_config, 0, sizeof(g_server_config));
+        CONFIG_READ_STRVAL(g_server_config, dbproxy_name);
+
+        // 初始化网络连接
+        if (init_connections() != 0) {
+            KERROR_LOG(0, "init server connections failed"); 
+            return -1;
+        }
+
+
+        // 启动业务逻辑定时器 
+        if (start_function_timers() != 0) {
+            KERROR_LOG(0, "start function timers failed"); 
+            return -1;
+        }
+
 	}
 
 	return 0;
@@ -99,6 +154,7 @@ extern "C" void on_client_conn_closed(int fd)
         player_leave_server(player);
         uninit_player(player);
         g_player_manager->dealloc_player(player);
+        RoomUtils::player_levave_room(player);
     }
 }
 
@@ -134,6 +190,7 @@ int init_processors()
 {
     g_proto_processor->register_command(cli_cmd_cs_enter_srv, new LoginCmdProcessor());
     g_proto_processor->register_command(cli_cmd_cs_keep_live, new KeepLiveCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_create_role, new KeepLiveCmdProcessor());
 
     //ROOM
     g_proto_processor->register_command(cli_cmd_cs_get_room_list, new GetRoomListCmdProcessor());
@@ -141,6 +198,8 @@ int init_processors()
     g_proto_processor->register_command(cli_cmd_cs_leave_room, new LeaveRoomCmdProcessor());
     g_proto_processor->register_command(cli_cmd_cs_inside_ready, new InsideReadyCmdProcessor());
     g_proto_processor->register_command(cli_cmd_cs_create_room, new CreateRoomCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_cancel_inside_ready, new CancelInsideReadyCmdProcessor());
+
 
     return 0;
 }
@@ -164,6 +223,13 @@ bool load_configs()
 
 int init_connections()
 {
+    // 初始化dbproxy
+    g_dbproxy = new Service(std::string(g_server_config.dbproxy_name));
+    ADD_TIMER_EVENT_EX(&g_reconnect_timer, 
+            kTimerTypeReconnectServiceTimely, 
+            g_dbproxy,
+            get_now_tv()->tv_sec + kTimerIntervalReconnectServiceTimely); 
+
     return 0;
 }
 

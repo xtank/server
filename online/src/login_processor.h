@@ -9,6 +9,7 @@
 #include "player.h"
 #include "proto.h"
 #include "macro_utils.h"
+//#include "dbproto.base_info.pb.h"
 
 class LoginCmdProcessor : public CmdProcessorInterface
 {
@@ -33,5 +34,20 @@ private:
     onlineproto::cs_keep_live cs_keep_live_;  
     onlineproto::sc_keep_live sc_keep_live_;
 };
+
+//class CreateRoleCmdProcessor : public CmdProcessorInterface
+//{
+//public:
+
+    //int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    //int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+//private:
+    //onlineproto::cs_create_role cs_create_role_;  
+    //onlineproto::sc_create_role sc_create_role_;  
+
+    //dbproto::cs_create_role db_cs_create_role_;  
+    //dbproto::sc_create_role db_cs_create_role_;  
+//};
 
 #endif

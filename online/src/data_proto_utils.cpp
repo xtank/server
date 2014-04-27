@@ -15,7 +15,8 @@ int DataProtoUtils::pack_room_data(const room_t* room,
         onlineproto::player_data_t* room_player = room_data->add_playlist();
         room_player->set_userid(room->player_vec->at(j)->userid);
         room_player->set_status(room->player_vec->at(j)->status);
-        //room_player->set_name(room->player_vec[j]->nick);
+        room_player->set_teamid(room->player_vec->at(j)->teamid);
+        room_player->set_name("");
     }
 
     return 0;

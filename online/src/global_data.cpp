@@ -4,11 +4,19 @@
 #include "global_data.h"
 #include "player_manager.h"
 #include "room_manager.h"
+#include "server.h"
+#include "service.h"
+
 
 PlayerManager* g_player_manager;
 
 ProtoProcessor* g_proto_processor;
 
 RoomManager* g_room_manager;
-//server_config_t g_server_config;
+server_config_t g_server_config;
 
+
+//dbproxy server
+Service* g_dbproxy;
+
+timer_head_t g_reconnect_timer;

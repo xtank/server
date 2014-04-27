@@ -38,7 +38,7 @@ int ProtoProcessor::get_pkg_len(int fd, const void* avail_data,
 
         if ((avail_len == sizeof(request)) && !memcmp(avail_data, request, sizeof(request))) {
             net_send(fd, response, sizeof(response));
-            TRACE_LOG("Policy Req [%s] Received, Rsp [%s] Sent", request, response);
+            TRACE_TLOG("Policy Req [%s] Received, Rsp [%s] Sent", request, response);
             return 0;
         }
 
@@ -92,7 +92,7 @@ int ProtoProcessor::proc_pkg_from_client(void* data, int len,
     char* body = static_cast<char *>(data) + sizeof(cli_proto_header_t);
     int bodylen = header->len - sizeof(cli_proto_header_t);
 
-    TRACE_LOG("len = %u, seq = %u, cmd = %u ret= %u", 
+    TRACE_TLOG("len = %u, seq = %u, cmd = %u ret= %u", 
             header->len, header->seq, header->cmd, header->ret);
 
     player_t* player = g_player_manager->get_player_by_fd(fdsess->fd);
