@@ -208,4 +208,58 @@ int CancelInsideReadyCmdProcessor::proc_pkg_from_serv(
     return 0;
 }
 
+int SelectTankCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    uint32_t tankid = cli_in_.tankid();
+    player->tankid = tankid;
+
+    RoomUtils::send_player_update_msg_in_room(player);
+     
+    return send_msg_to_player(player, player->wait_cmd, cli_out_);
+}
+
+int SelectTankCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+int SelectTeamCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    uint32_t teamid = cli_in_.teamid();
+    uint32_t seatid = cli_in_.seatid();
+
+    player->teamid = teamid;
+    player->seatid = seatid;
+
+    RoomUtils::send_player_update_msg_in_room(player);
+     
+    return send_msg_to_player(player, player->wait_cmd, cli_out_);
+}
+
+int SelectTeamCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+
 

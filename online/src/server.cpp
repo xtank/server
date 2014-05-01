@@ -200,6 +200,10 @@ int init_processors()
     g_proto_processor->register_command(cli_cmd_cs_create_room, new CreateRoomCmdProcessor());
     g_proto_processor->register_command(cli_cmd_cs_cancel_inside_ready, new CancelInsideReadyCmdProcessor());
 
+    g_proto_processor->register_command(cli_cmd_cs_select_tank, new SelectTankCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_select_team, new SelectTeamCmdProcessor());
+
+
 
     return 0;
 }

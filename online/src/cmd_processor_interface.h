@@ -67,6 +67,10 @@ inline int parse_message(
     TRACE_TLOG("PARSE MSG:'%s' ok\nMSG:\n[%s]", 
             name.c_str(), debug_str.c_str());
 
+    DEBUG_TLOG("PARSE MSG:'%s' ok\nMSG:\n[%s]", 
+            name.c_str(), debug_str.c_str());
+
+
     return 0;
 }
 

@@ -89,6 +89,7 @@ uint32_t RoomManager::enter_room(player_t* player, uint32_t room_id) {
     player->status = kInsideFree;
     player->roomid = room_id;
     player->teamid = RoomUtils::select_team_id(room);
+    player->seatid = RoomUtils::select_seat_id(room, player->teamid);
 
     room->player_vec->push_back(player);
 
@@ -108,6 +109,19 @@ void RoomManager::dealloc_room(room_t* room)
     uninit_room(room);
 
     delete room;
+}
+
+void RoomManager::send_msg_to_room_player(uint32_t cmd, uint32_t roomid, const google::protobuf::Message& message)
+{
+    room_t* room = get_room_by_id(roomid);
+    if (room == NULL) {
+        return;
+    }
+
+    for (uint32_t i = 0; i < room->player_vec->size(); i++) {
+        player_t* player = room->player_vec->at(i);
+        send_msg_to_player(player, cmd, message);
+    }
 }
 
 

@@ -27,6 +27,8 @@ public:
 
     void dealloc_room(room_t* room);
 
+    void send_msg_to_room_player(uint32_t cmd, uint32_t roomid, const google::protobuf::Message& message);
+    
 private:
 
     uint32_t room_idx_;

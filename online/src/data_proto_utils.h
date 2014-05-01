@@ -14,6 +14,7 @@
 #include "proto/client/data.pb.h"
 
 struct room_t;
+struct player_t;
 
 
 class DataProtoUtils
@@ -21,6 +22,10 @@ class DataProtoUtils
 public:
     static int pack_room_data(const room_t* room,
             onlineproto::room_data_t* room_data);
+
+     static int pack_player_data(const player_t* player,
+            onlineproto::player_data_t* player_data);
+    
 };
 
 #endif

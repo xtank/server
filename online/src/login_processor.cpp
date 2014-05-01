@@ -50,6 +50,7 @@ int LoginCmdProcessor::proc_pkg_from_client(
     player_new->fdsession = player_temp->fdsession;
     player_new->wait_cmd = player_temp->wait_cmd;
     player_new->seqno = player_temp->seqno;
+    player_new->tankid = 1;
 
     //std::string nick = "player";
     //strcpy(player_new->nick, nick.c_str());

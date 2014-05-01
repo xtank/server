@@ -33,6 +33,8 @@ struct player_t
     uint32_t roomid;
     room_player_status_t status;
     uint32_t teamid;
+    uint32_t tankid;
+    uint32_t seatid;
 
     /* 缓存session放在最后一个字段 */
     char session[4096];  // 缓存

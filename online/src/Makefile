@@ -1,5 +1,6 @@
 CC = g++
 
+ROOTDIR = ../../
 WORKDIR = ../
 BINDIR = $(WORKDIR)/bin
 OBJDIR = $(WORKDIR)/obj

@@ -85,4 +85,29 @@ private:
     onlineproto::sc_create_room cli_out_;  
 };
 
+class SelectTankCmdProcessor : public CmdProcessorInterface
+{
+public:
+
+    int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+private:
+    onlineproto::cs_select_tank cli_in_;  
+    onlineproto::sc_select_tank cli_out_;  
+};
+
+class SelectTeamCmdProcessor : public CmdProcessorInterface
+{
+public:
+
+    int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+private:
+    onlineproto::cs_select_team cli_in_;  
+    onlineproto::sc_select_team cli_out_;  
+};
+
+
 #endif

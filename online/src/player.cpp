@@ -41,6 +41,11 @@ TRACE_TLOG("Send Buf To Player Ok: [u:%u cmd:%d hex_cmd:0X%04X len(%u+%u)=%u]",
             player ?player->userid :0, cmd, cmd, 
             sizeof(*header), bodylen, header->len);
 
+DEBUG_TLOG("Send Buf To Player Ok: [u:%u cmd:%d hex_cmd:0X%04X len(%u+%u)=%u]",
+            player ?player->userid :0, cmd, cmd, 
+            sizeof(*header), bodylen, header->len);
+
+
     //header->checksum = Utils::fold_binary(
             //(const uint8_t *)(send_buf + sizeof(*header)),
             //bodylen);
@@ -68,6 +73,11 @@ int send_msg_to_player(player_t* player, uint32_t cmd, const google::protobuf::M
     header->ret = 0;
 
 DEBUG_TLOG("SEND PKG TO CLIENT [u:%u cmd:%d hexcmd:0x%04x]", player->userid, header->cmd, header->cmd);
+DEBUG_TLOG("Send Msg To Player Ok: [u:%u cmd:%d, hex_cmd:0X%04X len(%u+%u)=%u ]\nmsg:%s\n[%s]",
+            player ?player->userid :0, cmd, cmd,
+            sizeof(*header), message.ByteSize(), header->len,
+            message.GetTypeName().c_str(), message.Utf8DebugString().c_str());
+
 
     //return send_pkg_to_client(player->fdsession, send_buf, header->len);
     int ret = send_pkg_to_client(player->fdsession, send_buf, header->len);

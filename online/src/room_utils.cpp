@@ -46,11 +46,39 @@ void RoomUtils::send_player_update_msg(player_t* player) {
     onlineproto::sc_notify_player_update sc_notify_player_update_;
     onlineproto::player_data_t* player_data = sc_notify_player_update_.mutable_player();
 
-    player_data->set_userid(player->userid);
-    player_data->set_status(player->status);
+    DataProtoUtils::pack_player_data(player, player_data);
+    //player_data->set_userid(player->userid);
+    //player_data->set_status(player->status);
+    //player_data->set_teamid(player->teamid);
+    //player-data->set_tankid(player->tankid);
+
+    //player_data->set_name("");
+
 
     g_player_manager->send_msg_to_all_player(cli_cmd_cs_notify_player_update, sc_notify_player_update_);
 }
+
+void RoomUtils::send_player_update_msg_in_room(player_t* player) {
+
+    if (player == NULL) {
+        return ;
+    }
+    
+    onlineproto::sc_notify_player_update sc_notify_player_update_;
+    onlineproto::player_data_t* player_data = sc_notify_player_update_.mutable_player();
+
+    DataProtoUtils::pack_player_data(player, player_data);
+    //player_data->set_userid(player->userid);
+    //player_data->set_status(player->status);
+    //player_data->set_teamid(player->teamid);
+    //player-data->set_tankid(player->tankid);
+
+    //player_data->set_name("");
+
+
+    g_room_manager->send_msg_to_room_player(cli_cmd_cs_notify_player_update, player->roomid, sc_notify_player_update_);
+}
+
 
 
 void RoomUtils::player_levave_room(player_t* player) {
@@ -91,8 +119,8 @@ void RoomUtils::player_levave_room(player_t* player) {
             }
 
             send_room_update_msg(room_id, kDelRoom);
-            g_room_manager->dealloc_room(room);
         }
+        g_room_manager->dealloc_room(room);
     }
     else {
         player->roomid = 0;
@@ -131,6 +159,34 @@ uint32_t RoomUtils::select_team_id(room_t* room) {
         return 1;
     } else {
         return 2;
+    }
+
+    return 0;
+}
+
+uint32_t RoomUtils::select_seat_id(room_t* room, uint32_t teamid) {
+
+    if (room == NULL) {
+        return 0;
+    }
+
+    std::bitset<5> bit_vec;
+    for (uint32_t j = 0; j < room->player_vec->size(); j++) {
+        if (room->player_vec->at(j)->teamid == teamid) {
+
+            if (room->player_vec->at(j)->seatid > 5 ||
+                    room->player_vec->at(j)->seatid < 1) {
+                continue;
+            }
+
+            bit_vec.set(room->player_vec->at(j)->seatid);
+        }
+    }
+
+    for (uint32_t i = 1; i < bit_vec.size(); i++) {
+        if (!bit_vec.test(i)) {
+            return i;
+        }
     }
 
     return 0;
