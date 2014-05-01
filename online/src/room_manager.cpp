@@ -62,6 +62,7 @@ room_t* RoomManager::alloc_room(player_t* player, const std::string& name, uint3
     player->roomid = room_idx_;
     player->status = kInsideFree;
     player->teamid = RoomUtils::select_team_id(room);
+    player->seatid = RoomUtils::select_seat_id(room, player->teamid);
 
     return room;
 }

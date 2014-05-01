@@ -174,8 +174,7 @@ uint32_t RoomUtils::select_seat_id(room_t* room, uint32_t teamid) {
     for (uint32_t j = 0; j < room->player_vec->size(); j++) {
         if (room->player_vec->at(j)->teamid == teamid) {
 
-            if (room->player_vec->at(j)->seatid > 5 ||
-                    room->player_vec->at(j)->seatid < 1) {
+            if (room->player_vec->at(j)->seatid > 5) {
                 continue;
             }
 
