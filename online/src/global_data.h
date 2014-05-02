@@ -34,7 +34,6 @@ extern RoomManager* g_room_manager;
 //switch server
 //extern Service* g_switch;
 
-//dbproxy server
 extern Service* g_dbproxy;
 
 // online服务相关配置 

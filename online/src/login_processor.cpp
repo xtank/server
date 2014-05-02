@@ -9,10 +9,12 @@ extern "C" {
 #include "global_data.h"
 #include "player.h"
 #include "proto.h"
+#include "service.h"
 #include "player_manager.h"
 
 #include "proto/client/cli_errno.h"
 #include "proto/client/attr_type.h"
+
 //=======================================================================
 int LoginCmdProcessor::proc_pkg_from_client(
         player_t* player_temp, const char* body, int bodylen)
@@ -55,16 +57,27 @@ int LoginCmdProcessor::proc_pkg_from_client(
     //std::string nick = "player";
     //strcpy(player_new->nick, nick.c_str());
 
-    sc_enter_server_.set_userid(player_new->userid);
-    sc_enter_server_.set_name("player");
+    //sc_enter_server_.set_userid(player_new->userid);
+    //sc_enter_server_.set_name("player");
    
-    return send_msg_to_player(player_new, player_new->wait_cmd, sc_enter_server_);
+    //return send_msg_to_player(player_new, player_new->wait_cmd, sc_enter_server_);
+    return g_dbproxy->send_msg(player_new, player_new->userid, db_cmd_get_login_info, db_cs_get_login_info_);
 }
 
 int LoginCmdProcessor::proc_pkg_from_serv(
         player_t* player, const char* body, int bodylen)
 {
-    return 0;
+    if (parse_message(body, bodylen, &db_sc_get_login_info_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    std::string nick = db_sc_get_login_info_.base_info().nick();
+
+    sc_enter_server_.set_userid(player->userid);
+    sc_enter_server_.set_name(nick);
+
+    return send_msg_to_player(player, player->wait_cmd, sc_enter_server_);
 }
 
 int KeepLiveCmdProcessor::proc_pkg_from_client(
@@ -92,29 +105,24 @@ int KeepLiveCmdProcessor::proc_pkg_from_serv(
     return 0;
 }
 
-//int CreateRoleCmdProcessor::proc_pkg_from_client(
-        //player_t* player, const char* body, int bodylen)
-//{
-    //cs_create_role_.Clear();
-    //sc_create_role_.Clear();
+int CreateRoleCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cs_create_role_.Clear();
+    sc_create_role_.Clear();
 
-    //if (parse_message(body, bodylen, &cs_keep_live_)) {
-        //return send_err_to_player(player, 
-                //player->wait_cmd, cli_err_proto_format_err);
-    //}
+    if (parse_message(body, bodylen, &cs_create_role_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
 
-    //uint32_t time = cs_keep_live_.time();
+    return send_msg_to_player(player, player->wait_cmd, sc_create_role_);
+}
 
-    //sc_keep_live_.set_time(time);
-    //sc_keep_live_.set_server_time(NOW());
-   
-    //return send_msg_to_player(player, player->wait_cmd, sc_keep_live_);
-//}
-
-//int CreateRoleCmdProcessor::proc_pkg_from_serv(
-        //player_t* player, const char* body, int bodylen)
-//{
-    //return 0;
-//}
+int CreateRoleCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
 
 
