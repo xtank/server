@@ -1,0 +1,7 @@
+package dbproto;
+
+message base_info_t
+{
+    optional string nick = 1; // 昵称
+}
+

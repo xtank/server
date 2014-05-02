@@ -1,0 +1,14 @@
+package dbproto;
+
+
+// 创建角色
+message cs_create_role
+{
+    required string nick = 1;
+    optional bool sex = 2;
+}
+
+message sc_create_role
+{
+
+}

@@ -1,0 +1,15 @@
+package dbproto;
+
+import "dbproto.data.proto";
+
+// 获取用户登录信息
+message cs_get_login_info
+{
+
+}
+
+message sc_get_login_info
+{
+    optional base_info_t base_info = 1; // 基础信息
+}
+

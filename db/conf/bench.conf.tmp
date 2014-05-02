@@ -1,0 +1,29 @@
+log_dir         ../log
+log_level       8
+log_size        32000000
+
+bind_file       ../conf/bind.conf
+worker_num      1
+shmq_length	    16777216
+
+#send_sem_key        84001
+#recv_sem_key        84003
+
+#config tcp and udp socket recvbuf size, warning: recv_buf_size must > udp pack
+recv_buf_size   8192
+
+# sms warning system ip addr
+#warning_ip          192.168.0.39
+# sms warning system port
+#warning_port        33001
+# project name
+#project_name        mole
+# a short message will be sent to the following phone numbers when system crash
+#phone_numbers       13761071357,13808888888
+
+mysql_host      localhost
+mysql_user      root
+mysql_passwd    ta0mee
+mysql_port      3306
+mysql_charset   utf8
+

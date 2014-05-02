@@ -1,0 +1,42 @@
+<root>
+<route_item name="db基础信息, game_db_xx" db_type="1">
+	<cmd_bind>
+		<item cmdid="0x8200"> </item>
+	</cmd_bind>
+	<ip_bind>
+		<item   db_startid="0"  db_endid="0" ip="192.168.174.128"  port="15002" />
+	</ip_bind>
+</route_item>
+
+
+
+<!-- 可用命令号范围:0x8000-0xBFFF, 
+如:0x8200 0x8400,0xBE00 ,每个区段间隔512个命令
+一共有32个区段,  0xA000 不要使用,已经分配给MAIN_LOGIN, SU也在0xA000
+
+8000=>8000-81FF
+8200=>8200-83FF
+BE00=>BE00-BFFF
+
+<route_item  name="XXX" db_type="10" >
+	<cmd_bind>
+		<item cmdid="0x8000"> </item>
+		<item cmdid="0x8200"> </item>
+	</cmd_bind>
+	<ip_bind>
+		<item   db_startid="0"  db_endid="9" ip="10.1.1.5"  port="30004" />
+	</ip_bind>
+</route_item>
+
+<route_item  name="XXX_CoNF" db_type="1" >
+	<cmd_bind>
+		<item cmdid="0x9200"> </item>
+	</cmd_bind>
+	<ip_bind>
+		<item   db_startid="0"  db_endid="0" ip="10.1.1.5"  port="210033" />
+	</ip_bind>
+</route_item>
+-->
+
+
+</root>
