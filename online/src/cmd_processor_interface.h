@@ -47,6 +47,12 @@ public:
             const char* body,
             int bodylen) = 0;
 
+    virtual uint32_t proc_errno_from_serv(                                                                                                               
+            player_t* player, uint32_t ret) 
+    {
+        return cli_err_sys_err; 
+    }
+
 };
 
 inline int parse_message(

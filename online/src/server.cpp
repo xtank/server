@@ -61,12 +61,16 @@ extern "C" int  init_service(int isparent)
         SET_LOG_LEVEL((tlog_lvl_t)/*tlog_lvl_trace*/config_get_intval("log_level", 6));
         SET_TIME_SLICE_SECS(86400);
 
-        setup_timer();
+        srand(time(NULL));
+        srandom(time(NULL));
+
         init_processors();
         g_player_manager = new PlayerManager(); 
         g_room_manager = new RoomManager();
 
         INIT_LIST_HEAD(&g_reconnect_timer.timer_list);
+        setup_timer();
+        register_timers();
 
         memset(&g_server_config, 0, sizeof(g_server_config));
         CONFIG_READ_STRVAL(g_server_config, dbproxy_name);
@@ -140,7 +144,7 @@ extern "C" int  proc_pkg_from_client(void* data, int len, fdsession_t* fdsess)
 */
 extern "C" void proc_pkg_from_serv(int fd, void* data, int len)
 {
-    //g_proto_processor->proc_pkg_from_serv(fd, data, len);
+    g_proto_processor->proc_pkg_from_serv(fd, data, len);
 }
 
 /**
@@ -228,11 +232,15 @@ bool load_configs()
 int init_connections()
 {
     // 初始化dbproxy
-    g_dbproxy = new Service(std::string(g_server_config.dbproxy_name));
+    g_dbproxy = new Service(std::string(g_server_config.dbproxy_name), std::string("192.168.174.129"), 4102);
     ADD_TIMER_EVENT_EX(&g_reconnect_timer, 
             kTimerTypeReconnectServiceTimely, 
             g_dbproxy,
             get_now_tv()->tv_sec + kTimerIntervalReconnectServiceTimely); 
+
+    if (g_dbproxy->connect() != 0) {
+        KERROR_LOG(0, "init server connections failed"); 
+    }
 
     return 0;
 }

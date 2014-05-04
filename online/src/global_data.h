@@ -16,7 +16,7 @@ class ProtoProcessor;
 class PlayerManager;
 class RoomManager;
 class Service;
-
+class map_conf_mgr_t; 
 struct server_config_t;
 
 struct timer_head_t{
@@ -39,5 +39,7 @@ extern Service* g_dbproxy;
 // online服务相关配置 
 extern server_config_t g_server_config;
 extern timer_head_t g_reconnect_timer;
+
+extern map_conf_mgr_t g_map_conf_mgr;
 
 #endif

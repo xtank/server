@@ -15,7 +15,7 @@ tcpCli=socket(AF_INET, SOCK_STREAM);
 tcpCli.connect(ADDR);
 
 enter = login_pb2.cs_enter_server();
-enter.userid = 545155399;
+enter.userid = 440000;
 
 body_str = enter.SerializeToString();
 

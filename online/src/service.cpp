@@ -233,6 +233,7 @@ void Service::on_connect_callback(int fd, void* args)
     Service* service = (Service *)args;
 
     DEBUG_LOG("on connect callback");
+    KERROR_LOG(0, "on connect callback"); 
 
     if (fd > 0) {
         DEBUG_LOG("connect to service %s OK",
@@ -249,6 +250,10 @@ void Service::on_connect_callback(int fd, void* args)
     } else {
         ERROR_TLOG("connect to service %s Failed", 
                 service->service_name().c_str());
+
+        KERROR_LOG(0, "connect to service %s Failed", 
+                service->service_name().c_str());
+
 
         ADD_TIMER_EVENT_EX(&g_reconnect_timer, 
                 kTimerTypeReconnectServiceTimely, 

@@ -4,6 +4,7 @@
 #include "proto.h"
 #include "global_data.h"
 #include "player_manager.h"
+#include "db/proto/db_errno.h"
 
 
 ProtoProcessor::ProtoProcessor()
@@ -145,6 +146,106 @@ DEBUG_TLOG("GET PKG FROM CLIENT [u:%u cmd:%d hexcmd:0x%04x]", player->userid, he
 
 void ProtoProcessor::proc_pkg_from_serv(int fd, void* data, int len)
 {
+    db_proto_header_t* header = static_cast<db_proto_header_t *>(data);
+    const char* body = (char *)data + sizeof(*header);
+    int bodylen = len - sizeof(*header);
+   
+
+    player_t* player;
+    
+    player = g_player_manager->get_player_by_fd(header->seq);
+
+    if (!player) return;  
+
+    bool need_match_wait_cmd = true;
+    bool use_header_cmd = false;
+    //switch (header->cmd) {
+        //case home_cmd_notify_entered:
+        //case home_cmd_notify_free_home:
+        //case home_cmd_notify_visited:
+        //case home_cmd_notify_walk:
+        //case home_cmd_notify_come:
+        //case home_cmd_notify_go:
+        //case home_cmd_notify_pet_change:
+            //need_match_wait_cmd = false;
+            //use_header_cmd = true;
+            //break;
+////        case cache_cmd_ol_req_users_info:
+////            need_match_wait_cmd = true;
+////            use_header_cmd = true;
+////            break;
+        //default :
+            //break;
+    //}
+
+    if (need_match_wait_cmd && header->cmd != player->wait_serv_cmd) {
+        ERROR_TLOG("RECV NO MATCH PKG FROM SERVER [u:%u cmd:0x%04X wait_cmd:0x%04x ret:%d]", 
+                player->userid, header->cmd, player->wait_serv_cmd, header->ret);
+        return ; 
+    }
+
+
+    // 如果需要等待服务器cmd 且cmd相等 清除等待的命令号
+    //if (need_match_wait_cmd) { //可以将等待的定时器删除
+        //player->wait_serv_cmd = 0;
+        //if (player->db_request_timer) {
+            //REMOVE_TIMER(player->db_request_timer); 
+            //player->db_request_timer = NULL;
+        //}
+    //}
+
+    std::map<uint32_t, CmdProcessorInterface *>::iterator it;
+
+    if (use_header_cmd) {
+        it = cmd_processors_.find(header->cmd);
+    } else {
+        it = cmd_processors_.find(player->wait_cmd);
+    }
+
+    if (it == cmd_processors_.end()) {
+        ERROR_TLOG("SERVER RET CMD NOT FOUND[u:%u cmd:0x%04X ret:%d]", 
+                player->userid, header->cmd, header->ret);  
+        send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+        return ;
+    }
+
+    CmdProcessorInterface* processor = it->second;
+
+    //temp_info_t* temp_info = &player->temp_info;
+    //struct timeval db_response_time = *get_now_tv();
+    //struct timeval db_diff_time = {0};
+    //timersub(&db_response_time, &(temp_info->db_request_time), &db_diff_time);
+//TRACE_TLOG("GET PKG FROM SERVER [u:%u cmd:0x%04X ret:%d len:%u cli-cmd:%d cost: %d.%06d]", 
+            //player->userid, header->cmd, header->ret, header->len, player->wait_cmd,
+            //db_diff_time.tv_sec, db_diff_time.tv_usec);
+
+    if (header->ret == 0) {
+        int ret = processor->proc_pkg_from_serv(player, body, bodylen);
+        if (ret != 0) {
+            KERROR_LOG(player->userid, "PROC SERVER CMD ERR [cmd:0x%04x ret:%d]", header->cmd, ret); 
+            send_err_to_player(player, player->wait_cmd, ret);
+        }
+    } else {
+        
+        //if (header->ret == db_err_sys_err
+                //|| header->ret == 2002 [> sql有误<] 
+                //|| header->ret == 1017 [> 系统超时<] 
+                //|| header->ret == family_err_sys_err
+                //|| header->ret == btl_err_sys_err) {
+            //asynsvr_send_warning_msg("SysErr", 
+                    //header->uid, header->cmd, 1, "");
+        //}
+
+        KERROR_LOG(player->userid, "SERVER RET CMD ERR[cmd:0x%04X ret:%d]", 
+                header->cmd, header->ret);
+        uint32_t cli_errno = processor->proc_errno_from_serv(player, header->ret);
+        //if (header->ret == 2004) {
+            //cli_errno = cli_err_user_not_found;
+        //}
+        if (cli_errno) {
+            send_err_to_player(player, player->wait_cmd, cli_errno);
+        }
+    }
 
 }
 

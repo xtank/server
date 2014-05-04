@@ -6,6 +6,7 @@
 #include "room_manager.h"
 #include "server.h"
 #include "service.h"
+#include "map_conf.h"
 
 
 PlayerManager* g_player_manager;
@@ -20,3 +21,5 @@ server_config_t g_server_config;
 Service* g_dbproxy;
 
 timer_head_t g_reconnect_timer;
+
+map_conf_mgr_t g_map_conf_mgr;

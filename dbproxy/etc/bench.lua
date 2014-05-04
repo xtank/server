@@ -24,9 +24,9 @@ mcast_ip = "239.0.1.9"
 -- mcast port
 mcast_port = "8888" 
 -- interface on which arriving multicast datagrams will be received
-mcast_incoming_if = "eth0" 
+mcast_incoming_if = "eth1" 
 -- interface for outgoing multicast datagrams
-mcast_outgoing_if = "10.1.1.182" 
+mcast_outgoing_if = "192.168.174.129" 
 incoming_packet_max_size = "3276800" 
 
 -- dll file
@@ -43,17 +43,17 @@ route_file = "./etc/route.xml"
 
 
 --# mcast config for synchronize the name and ip address of a given service
-addr_mcast_ip = "239.0.0.1" 
+addr_mcast_ip = "239.0.0.2" 
 addr_mcast_port = "5539" 
 --### interface on which arriving multicast datagrams will be received
-addr_mcast_incoming_if = "eth0" 
+addr_mcast_incoming_if = "eth1" 
 --
-addr_mcast_outgoing_if = "10.1.1.182"
+addr_mcast_outgoing_if = "192.168.174.129"
 
 --------------------------------
 --bind
 -- item 格式 { id, "server.name", "ip", port  } 
 async_server_bind_map={ }
-async_server_bind_map[0]={1, "dbproxy.xtank",	ip, 4102 }
+async_server_bind_map[0]={99, "dbproxy.xtank",	ip, 4102 }
 
 tm_dirty_use_dirty_logical ="0"
