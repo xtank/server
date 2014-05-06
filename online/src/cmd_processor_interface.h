@@ -10,6 +10,8 @@ extern "C" {
 #include <stdint.h>
 #include <libtaomee++/proto/Ccmd_map.h>
 
+#include "proto/client/cli_errno.h"
+
 struct player_t;
 
 class CmdProcessorInterface
