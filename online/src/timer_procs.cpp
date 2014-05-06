@@ -32,6 +32,7 @@ extern "C" {
 
 int reconnect_service_timely(void* owner, void* data)
 {
+    KERROR_LOG(0 ,"reconnect_service timely");
     Service* service = (Service *)data;
     if (service->connect() != 0) {
         ADD_TIMER_EVENT_EX(&g_reconnect_timer,
@@ -40,7 +41,6 @@ int reconnect_service_timely(void* owner, void* data)
                 get_now_tv()->tv_sec + kTimerIntervalReconnectServiceTimely);  
     }
 
-    KERROR_LOG(0 ,"reconnect_service timely");
     return 0;
 }
 
