@@ -114,6 +114,7 @@ extern "C" int  fini_service(int isparent)
 */
 extern "C" void proc_events()
 {
+    handle_timer();
 }
 
 /**
@@ -232,15 +233,16 @@ bool load_configs()
 int init_connections()
 {
     // 初始化dbproxy
-    g_dbproxy = new Service(std::string(g_server_config.dbproxy_name), std::string("192.168.174.129"), 4102);
+    //g_dbproxy = new Service(std::string(g_server_config.dbproxy_name), std::string("10.165.2.41"), 4102);
+    g_dbproxy = new Service(std::string(g_server_config.dbproxy_name));
     ADD_TIMER_EVENT_EX(&g_reconnect_timer, 
             kTimerTypeReconnectServiceTimely, 
             g_dbproxy,
             get_now_tv()->tv_sec + kTimerIntervalReconnectServiceTimely); 
 
-    if (g_dbproxy->connect() != 0) {
-        KERROR_LOG(0, "init server connections failed"); 
-    }
+    //if (g_dbproxy->connect() != 0) {
+        //KERROR_LOG(0, "init server connections failed"); 
+    //}
 
     return 0;
 }
