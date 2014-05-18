@@ -7,10 +7,12 @@ from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 
+import data_pb2
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='room.proto',
   package='onlineproto',
-  serialized_pb='\n\nroom.proto\x12\x0bonlineproto\x1a\ndata.proto\"\x12\n\x10\x63s_get_room_list\"?\n\x10sc_get_room_list\x12+\n\troom_list\x18\x01 \x03(\x0b\x32\x18.onlineproto.room_data_t\" \n\rcs_enter_room\x12\x0f\n\x07room_id\x18\x01 \x02(\r\"\x0f\n\rsc_enter_room\"\x0f\n\rcs_leave_room\"\x0f\n\rsc_leave_room\"\x11\n\x0f\x63s_inside_ready\"\x11\n\x0fsc_inside_ready\"\x11\n\x0f\x63s_inside_start\"\x11\n\x0fsc_inside_start\"\x17\n\x15\x63s_notify_room_update\"M\n\x15sc_notify_room_update\x12\x0c\n\x04oper\x18\x01 \x02(\r\x12&\n\x04room\x18\x02 \x01(\x0b\x32\x18.onlineproto.room_data_t\">\n\x0e\x63s_create_room\x12\x0e\n\x06map_id\x18\x01 \x02(\r\x12\x0c\n\x04name\x18\x02 \x02(\t\x12\x0e\n\x06passwd\x18\x03 \x01(\r\"\x10\n\x0esc_create_room')
+  serialized_pb='\n\nroom.proto\x12\x0bonlineproto\x1a\ndata.proto\"\x12\n\x10\x63s_get_room_list\"?\n\x10sc_get_room_list\x12+\n\troom_list\x18\x01 \x03(\x0b\x32\x18.onlineproto.room_data_t\" \n\rcs_enter_room\x12\x0f\n\x07room_id\x18\x01 \x02(\r\"\x1f\n\rsc_enter_room\x12\x0e\n\x06roomid\x18\x01 \x02(\r\"\x0f\n\rcs_leave_room\"\x0f\n\rsc_leave_room\"\x11\n\x0f\x63s_inside_ready\"\x11\n\x0fsc_inside_ready\"\x17\n\x15\x63s_notify_room_update\"M\n\x15sc_notify_room_update\x12\x0c\n\x04oper\x18\x01 \x02(\r\x12&\n\x04room\x18\x02 \x01(\x0b\x32\x18.onlineproto.room_data_t\">\n\x0e\x63s_create_room\x12\x0e\n\x06map_id\x18\x01 \x02(\r\x12\x0c\n\x04name\x18\x02 \x02(\t\x12\x0e\n\x06passwd\x18\x03 \x01(\r\" \n\x0esc_create_room\x12\x0e\n\x06roomid\x18\x01 \x02(\r\"\x18\n\x16\x63s_cancel_inside_ready\"\x18\n\x16sc_cancel_inside_ready\"0\n\x0e\x63s_select_team\x12\x0e\n\x06teamid\x18\x01 \x02(\r\x12\x0e\n\x06seatid\x18\x02 \x02(\r\"0\n\x0esc_select_team\x12\x0e\n\x06teamid\x18\x01 \x02(\r\x12\x0e\n\x06seatid\x18\x02 \x02(\r\" \n\x0e\x63s_select_tank\x12\x0e\n\x06tankid\x18\x01 \x02(\r\"\x10\n\x0esc_select_tank')
 
 
 
@@ -99,6 +101,13 @@ _SC_ENTER_ROOM = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='roomid', full_name='onlineproto.sc_enter_room.roomid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -109,7 +118,7 @@ _SC_ENTER_ROOM = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=158,
-  serialized_end=173,
+  serialized_end=189,
 )
 
 
@@ -129,8 +138,8 @@ _CS_LEAVE_ROOM = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=175,
-  serialized_end=190,
+  serialized_start=191,
+  serialized_end=206,
 )
 
 
@@ -150,8 +159,8 @@ _SC_LEAVE_ROOM = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=192,
-  serialized_end=207,
+  serialized_start=208,
+  serialized_end=223,
 )
 
 
@@ -171,8 +180,8 @@ _CS_INSIDE_READY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=209,
-  serialized_end=226,
+  serialized_start=225,
+  serialized_end=242,
 )
 
 
@@ -192,50 +201,8 @@ _SC_INSIDE_READY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=228,
-  serialized_end=245,
-)
-
-
-_CS_INSIDE_START = descriptor.Descriptor(
-  name='cs_inside_start',
-  full_name='onlineproto.cs_inside_start',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=247,
-  serialized_end=264,
-)
-
-
-_SC_INSIDE_START = descriptor.Descriptor(
-  name='sc_inside_start',
-  full_name='onlineproto.sc_inside_start',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=266,
-  serialized_end=283,
+  serialized_start=244,
+  serialized_end=261,
 )
 
 
@@ -255,8 +222,8 @@ _CS_NOTIFY_ROOM_UPDATE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=285,
-  serialized_end=308,
+  serialized_start=263,
+  serialized_end=286,
 )
 
 
@@ -290,8 +257,8 @@ _SC_NOTIFY_ROOM_UPDATE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=310,
-  serialized_end=387,
+  serialized_start=288,
+  serialized_end=365,
 )
 
 
@@ -332,14 +299,42 @@ _CS_CREATE_ROOM = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=389,
-  serialized_end=451,
+  serialized_start=367,
+  serialized_end=429,
 )
 
 
 _SC_CREATE_ROOM = descriptor.Descriptor(
   name='sc_create_room',
   full_name='onlineproto.sc_create_room',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='roomid', full_name='onlineproto.sc_create_room.roomid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=431,
+  serialized_end=463,
+)
+
+
+_CS_CANCEL_INSIDE_READY = descriptor.Descriptor(
+  name='cs_cancel_inside_ready',
+  full_name='onlineproto.cs_cancel_inside_ready',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -353,14 +348,170 @@ _SC_CREATE_ROOM = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=453,
-  serialized_end=469,
+  serialized_start=465,
+  serialized_end=489,
 )
 
-import data_pb2
+
+_SC_CANCEL_INSIDE_READY = descriptor.Descriptor(
+  name='sc_cancel_inside_ready',
+  full_name='onlineproto.sc_cancel_inside_ready',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=491,
+  serialized_end=515,
+)
+
+
+_CS_SELECT_TEAM = descriptor.Descriptor(
+  name='cs_select_team',
+  full_name='onlineproto.cs_select_team',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='teamid', full_name='onlineproto.cs_select_team.teamid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='seatid', full_name='onlineproto.cs_select_team.seatid', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=517,
+  serialized_end=565,
+)
+
+
+_SC_SELECT_TEAM = descriptor.Descriptor(
+  name='sc_select_team',
+  full_name='onlineproto.sc_select_team',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='teamid', full_name='onlineproto.sc_select_team.teamid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='seatid', full_name='onlineproto.sc_select_team.seatid', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=567,
+  serialized_end=615,
+)
+
+
+_CS_SELECT_TANK = descriptor.Descriptor(
+  name='cs_select_tank',
+  full_name='onlineproto.cs_select_tank',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='tankid', full_name='onlineproto.cs_select_tank.tankid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=617,
+  serialized_end=649,
+)
+
+
+_SC_SELECT_TANK = descriptor.Descriptor(
+  name='sc_select_tank',
+  full_name='onlineproto.sc_select_tank',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=651,
+  serialized_end=667,
+)
 
 _SC_GET_ROOM_LIST.fields_by_name['room_list'].message_type = data_pb2._ROOM_DATA_T
 _SC_NOTIFY_ROOM_UPDATE.fields_by_name['room'].message_type = data_pb2._ROOM_DATA_T
+DESCRIPTOR.message_types_by_name['cs_get_room_list'] = _CS_GET_ROOM_LIST
+DESCRIPTOR.message_types_by_name['sc_get_room_list'] = _SC_GET_ROOM_LIST
+DESCRIPTOR.message_types_by_name['cs_enter_room'] = _CS_ENTER_ROOM
+DESCRIPTOR.message_types_by_name['sc_enter_room'] = _SC_ENTER_ROOM
+DESCRIPTOR.message_types_by_name['cs_leave_room'] = _CS_LEAVE_ROOM
+DESCRIPTOR.message_types_by_name['sc_leave_room'] = _SC_LEAVE_ROOM
+DESCRIPTOR.message_types_by_name['cs_inside_ready'] = _CS_INSIDE_READY
+DESCRIPTOR.message_types_by_name['sc_inside_ready'] = _SC_INSIDE_READY
+DESCRIPTOR.message_types_by_name['cs_notify_room_update'] = _CS_NOTIFY_ROOM_UPDATE
+DESCRIPTOR.message_types_by_name['sc_notify_room_update'] = _SC_NOTIFY_ROOM_UPDATE
+DESCRIPTOR.message_types_by_name['cs_create_room'] = _CS_CREATE_ROOM
+DESCRIPTOR.message_types_by_name['sc_create_room'] = _SC_CREATE_ROOM
+DESCRIPTOR.message_types_by_name['cs_cancel_inside_ready'] = _CS_CANCEL_INSIDE_READY
+DESCRIPTOR.message_types_by_name['sc_cancel_inside_ready'] = _SC_CANCEL_INSIDE_READY
+DESCRIPTOR.message_types_by_name['cs_select_team'] = _CS_SELECT_TEAM
+DESCRIPTOR.message_types_by_name['sc_select_team'] = _SC_SELECT_TEAM
+DESCRIPTOR.message_types_by_name['cs_select_tank'] = _CS_SELECT_TANK
+DESCRIPTOR.message_types_by_name['sc_select_tank'] = _SC_SELECT_TANK
 
 class cs_get_room_list(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -410,18 +561,6 @@ class sc_inside_ready(message.Message):
   
   # @@protoc_insertion_point(class_scope:onlineproto.sc_inside_ready)
 
-class cs_inside_start(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _CS_INSIDE_START
-  
-  # @@protoc_insertion_point(class_scope:onlineproto.cs_inside_start)
-
-class sc_inside_start(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _SC_INSIDE_START
-  
-  # @@protoc_insertion_point(class_scope:onlineproto.sc_inside_start)
-
 class cs_notify_room_update(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _CS_NOTIFY_ROOM_UPDATE
@@ -445,5 +584,41 @@ class sc_create_room(message.Message):
   DESCRIPTOR = _SC_CREATE_ROOM
   
   # @@protoc_insertion_point(class_scope:onlineproto.sc_create_room)
+
+class cs_cancel_inside_ready(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _CS_CANCEL_INSIDE_READY
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.cs_cancel_inside_ready)
+
+class sc_cancel_inside_ready(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SC_CANCEL_INSIDE_READY
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.sc_cancel_inside_ready)
+
+class cs_select_team(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _CS_SELECT_TEAM
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.cs_select_team)
+
+class sc_select_team(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SC_SELECT_TEAM
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.sc_select_team)
+
+class cs_select_tank(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _CS_SELECT_TANK
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.cs_select_tank)
+
+class sc_select_tank(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SC_SELECT_TANK
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.sc_select_tank)
 
 # @@protoc_insertion_point(module_scope)

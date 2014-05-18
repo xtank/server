@@ -4,7 +4,7 @@
 		<item cmdid="0x8200"> </item>
 	</cmd_bind>
 	<ip_bind>
-		<item   db_startid="0"  db_endid="0" ip="192.168.174.129"  port="15002" />
+		<item   db_startid="0"  db_endid="0" ip="10.165.2.41"  port="15002" />
 	</ip_bind>
 </route_item>
 

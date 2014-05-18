@@ -2,12 +2,12 @@ from socket import *
 import sys
 import struct
 
-sys.path.append("/home/kentguan/xtank/online/python/proto")
+sys.path.append("../proto")
 
 import data_pb2
 import login_pb2
 
-HOST='192.168.174.128'
+HOST='218.244.140.169'
 PORT=9009
 
 ADDR=(HOST, PORT);

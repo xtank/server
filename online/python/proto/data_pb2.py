@@ -7,10 +7,11 @@ from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='data.proto',
   package='onlineproto',
-  serialized_pb='\n\ndata.proto\x12\x0bonlineproto\"/\n\rplayer_data_t\x12\x0e\n\x06userid\x18\x01 \x02(\r\x12\x0e\n\x06status\x18\x02 \x02(\r\"\x87\x01\n\x0broom_data_t\x12\n\n\x02id\x18\x01 \x02(\r\x12\x0f\n\x07ownerid\x18\x02 \x02(\r\x12\r\n\x05mapid\x18\x03 \x02(\r\x12\x0e\n\x06status\x18\x04 \x02(\r\x12,\n\x08playlist\x18\x05 \x03(\x0b\x32\x1a.onlineproto.player_data_t\x12\x0e\n\x06passwd\x18\x06 \x01(\r')
+  serialized_pb='\n\ndata.proto\x12\x0bonlineproto\"m\n\rplayer_data_t\x12\x0e\n\x06userid\x18\x01 \x02(\r\x12\x0e\n\x06status\x18\x02 \x02(\r\x12\x0c\n\x04name\x18\x03 \x02(\t\x12\x0e\n\x06teamid\x18\x04 \x02(\r\x12\x0e\n\x06tankid\x18\x05 \x02(\r\x12\x0e\n\x06seatid\x18\x06 \x02(\r\"\x95\x01\n\x0broom_data_t\x12\n\n\x02id\x18\x01 \x02(\r\x12\x0f\n\x07ownerid\x18\x02 \x02(\r\x12\r\n\x05mapid\x18\x03 \x02(\r\x12\x0e\n\x06status\x18\x04 \x02(\r\x12,\n\x08playlist\x18\x05 \x03(\x0b\x32\x1a.onlineproto.player_data_t\x12\x0e\n\x06passwd\x18\x06 \x01(\r\x12\x0c\n\x04name\x18\x07 \x02(\t\"~\n\rbattle_data_t\x12\r\n\x05mapid\x18\x01 \x02(\r\x12.\n\x05team1\x18\x02 \x02(\x0b\x32\x1f.onlineproto.battle_team_data_t\x12.\n\x05team2\x18\x03 \x02(\x0b\x32\x1f.onlineproto.battle_team_data_t\"\\\n\x12\x62\x61ttle_team_data_t\x12\x0e\n\x06teamid\x18\x01 \x02(\r\x12\x36\n\x0bmember_list\x18\x02 \x03(\x0b\x32!.onlineproto.battle_member_data_t\"Y\n\x14\x62\x61ttle_member_data_t\x12\x0e\n\x06userid\x18\x01 \x02(\r\x12\x0e\n\x06tankid\x18\x02 \x02(\r\x12\t\n\x01x\x18\x03 \x02(\r\x12\t\n\x01y\x18\x04 \x02(\r\x12\x0b\n\x03\x64ir\x18\x05 \x02(\r')
 
 
 
@@ -36,6 +37,34 @@ _PLAYER_DATA_T = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='name', full_name='onlineproto.player_data_t.name', index=2,
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='teamid', full_name='onlineproto.player_data_t.teamid', index=3,
+      number=4, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='tankid', full_name='onlineproto.player_data_t.tankid', index=4,
+      number=5, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='seatid', full_name='onlineproto.player_data_t.seatid', index=5,
+      number=6, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -46,7 +75,7 @@ _PLAYER_DATA_T = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=27,
-  serialized_end=74,
+  serialized_end=136,
 )
 
 
@@ -99,6 +128,13 @@ _ROOM_DATA_T = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='name', full_name='onlineproto.room_data_t.name', index=6,
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -108,12 +144,152 @@ _ROOM_DATA_T = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=77,
-  serialized_end=212,
+  serialized_start=139,
+  serialized_end=288,
 )
 
 
+_BATTLE_DATA_T = descriptor.Descriptor(
+  name='battle_data_t',
+  full_name='onlineproto.battle_data_t',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='mapid', full_name='onlineproto.battle_data_t.mapid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='team1', full_name='onlineproto.battle_data_t.team1', index=1,
+      number=2, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='team2', full_name='onlineproto.battle_data_t.team2', index=2,
+      number=3, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=290,
+  serialized_end=416,
+)
+
+
+_BATTLE_TEAM_DATA_T = descriptor.Descriptor(
+  name='battle_team_data_t',
+  full_name='onlineproto.battle_team_data_t',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='teamid', full_name='onlineproto.battle_team_data_t.teamid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='member_list', full_name='onlineproto.battle_team_data_t.member_list', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=418,
+  serialized_end=510,
+)
+
+
+_BATTLE_MEMBER_DATA_T = descriptor.Descriptor(
+  name='battle_member_data_t',
+  full_name='onlineproto.battle_member_data_t',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='userid', full_name='onlineproto.battle_member_data_t.userid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='tankid', full_name='onlineproto.battle_member_data_t.tankid', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='x', full_name='onlineproto.battle_member_data_t.x', index=2,
+      number=3, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='y', full_name='onlineproto.battle_member_data_t.y', index=3,
+      number=4, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='dir', full_name='onlineproto.battle_member_data_t.dir', index=4,
+      number=5, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=512,
+  serialized_end=601,
+)
+
 _ROOM_DATA_T.fields_by_name['playlist'].message_type = _PLAYER_DATA_T
+_BATTLE_DATA_T.fields_by_name['team1'].message_type = _BATTLE_TEAM_DATA_T
+_BATTLE_DATA_T.fields_by_name['team2'].message_type = _BATTLE_TEAM_DATA_T
+_BATTLE_TEAM_DATA_T.fields_by_name['member_list'].message_type = _BATTLE_MEMBER_DATA_T
+DESCRIPTOR.message_types_by_name['player_data_t'] = _PLAYER_DATA_T
+DESCRIPTOR.message_types_by_name['room_data_t'] = _ROOM_DATA_T
+DESCRIPTOR.message_types_by_name['battle_data_t'] = _BATTLE_DATA_T
+DESCRIPTOR.message_types_by_name['battle_team_data_t'] = _BATTLE_TEAM_DATA_T
+DESCRIPTOR.message_types_by_name['battle_member_data_t'] = _BATTLE_MEMBER_DATA_T
 
 class player_data_t(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -126,5 +302,23 @@ class room_data_t(message.Message):
   DESCRIPTOR = _ROOM_DATA_T
   
   # @@protoc_insertion_point(class_scope:onlineproto.room_data_t)
+
+class battle_data_t(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _BATTLE_DATA_T
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.battle_data_t)
+
+class battle_team_data_t(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _BATTLE_TEAM_DATA_T
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.battle_team_data_t)
+
+class battle_member_data_t(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _BATTLE_MEMBER_DATA_T
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.battle_member_data_t)
 
 # @@protoc_insertion_point(module_scope)

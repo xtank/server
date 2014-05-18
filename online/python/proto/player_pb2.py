@@ -7,6 +7,8 @@ from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 
+import data_pb2
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='player.proto',
   package='onlineproto',
@@ -63,9 +65,9 @@ _SC_NOTIFY_PLAYER_UPDATE = descriptor.Descriptor(
   serialized_end=137,
 )
 
-import data_pb2
-
 _SC_NOTIFY_PLAYER_UPDATE.fields_by_name['player'].message_type = data_pb2._PLAYER_DATA_T
+DESCRIPTOR.message_types_by_name['cs_notify_player_update'] = _CS_NOTIFY_PLAYER_UPDATE
+DESCRIPTOR.message_types_by_name['sc_notify_player_update'] = _SC_NOTIFY_PLAYER_UPDATE
 
 class cs_notify_player_update(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType

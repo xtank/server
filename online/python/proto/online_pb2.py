@@ -7,6 +7,7 @@ from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='online.proto',
   package='onlineproto',
@@ -77,7 +78,8 @@ _SC_KEEP_LIVE = descriptor.Descriptor(
   serialized_end=108,
 )
 
-
+DESCRIPTOR.message_types_by_name['cs_keep_live'] = _CS_KEEP_LIVE
+DESCRIPTOR.message_types_by_name['sc_keep_live'] = _SC_KEEP_LIVE
 
 class cs_keep_live(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType

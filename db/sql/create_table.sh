@@ -1,5 +1,8 @@
+#!/bin/bash
+
 for i in {0..99}
 do
+    echo $i
     db_no=`printf '%02d' $i`
 mysql -uroot -p1987922 -e "
 CREATE DATABASE IF NOT EXISTS game_db_${db_no}"

@@ -7,10 +7,11 @@ from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='login.proto',
   package='onlineproto',
-  serialized_pb='\n\x0blogin.proto\x12\x0bonlineproto\"!\n\x0f\x63s_enter_server\x12\x0e\n\x06userid\x18\x01 \x02(\r\"!\n\x0fsc_enter_server\x12\x0e\n\x06userid\x18\x01 \x02(\r')
+  serialized_pb='\n\x0blogin.proto\x12\x0bonlineproto\"!\n\x0f\x63s_enter_server\x12\x0e\n\x06userid\x18\x01 \x02(\r\"/\n\x0fsc_enter_server\x12\x0e\n\x06userid\x18\x01 \x02(\r\x12\x0c\n\x04name\x18\x02 \x02(\t\".\n\x0e\x63s_create_role\x12\x0e\n\x06userid\x18\x01 \x02(\r\x12\x0c\n\x04name\x18\x02 \x02(\t\"\x10\n\x0esc_create_role')
 
 
 
@@ -57,6 +58,13 @@ _SC_ENTER_SERVER = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='name', full_name='onlineproto.sc_enter_server.name', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -67,10 +75,69 @@ _SC_ENTER_SERVER = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=63,
-  serialized_end=96,
+  serialized_end=110,
 )
 
 
+_CS_CREATE_ROLE = descriptor.Descriptor(
+  name='cs_create_role',
+  full_name='onlineproto.cs_create_role',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='userid', full_name='onlineproto.cs_create_role.userid', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='name', full_name='onlineproto.cs_create_role.name', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=112,
+  serialized_end=158,
+)
+
+
+_SC_CREATE_ROLE = descriptor.Descriptor(
+  name='sc_create_role',
+  full_name='onlineproto.sc_create_role',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=160,
+  serialized_end=176,
+)
+
+DESCRIPTOR.message_types_by_name['cs_enter_server'] = _CS_ENTER_SERVER
+DESCRIPTOR.message_types_by_name['sc_enter_server'] = _SC_ENTER_SERVER
+DESCRIPTOR.message_types_by_name['cs_create_role'] = _CS_CREATE_ROLE
+DESCRIPTOR.message_types_by_name['sc_create_role'] = _SC_CREATE_ROLE
 
 class cs_enter_server(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -83,5 +150,17 @@ class sc_enter_server(message.Message):
   DESCRIPTOR = _SC_ENTER_SERVER
   
   # @@protoc_insertion_point(class_scope:onlineproto.sc_enter_server)
+
+class cs_create_role(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _CS_CREATE_ROLE
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.cs_create_role)
+
+class sc_create_role(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SC_CREATE_ROLE
+  
+  # @@protoc_insertion_point(class_scope:onlineproto.sc_create_role)
 
 # @@protoc_insertion_point(module_scope)

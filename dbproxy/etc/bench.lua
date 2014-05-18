@@ -24,9 +24,9 @@ mcast_ip = "239.0.1.9"
 -- mcast port
 mcast_port = "8888" 
 -- interface on which arriving multicast datagrams will be received
-mcast_incoming_if = "eth1" 
+mcast_incoming_if = "eth0" 
 -- interface for outgoing multicast datagrams
-mcast_outgoing_if = "192.168.174.129" 
+mcast_outgoing_if = "10.165.2.41" 
 incoming_packet_max_size = "3276800" 
 
 -- dll file
@@ -43,12 +43,12 @@ route_file = "./etc/route.xml"
 
 
 --# mcast config for synchronize the name and ip address of a given service
-addr_mcast_ip = "239.0.0.2" 
+addr_mcast_ip = "239.0.0.1" 
 addr_mcast_port = "5539" 
 --### interface on which arriving multicast datagrams will be received
-addr_mcast_incoming_if = "eth1" 
+addr_mcast_incoming_if = "eth0" 
 --
-addr_mcast_outgoing_if = "192.168.174.129"
+addr_mcast_outgoing_if = "10.165.2.41"
 
 --------------------------------
 --bind
