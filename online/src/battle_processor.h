@@ -24,4 +24,16 @@ private:
     onlineproto::sc_inside_start cli_out_;  
 };
 
+class BattleReadyCmdProcessor : public CmdProcessorInterface
+{
+public:
+
+    int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+private:
+    onlineproto::cs_battle_ready cli_in_;  
+    onlineproto::sc_battle_ready cli_out_;  
+};
+
 #endif

@@ -31,6 +31,7 @@ struct player_t
     bool is_login;
     //room info
     uint32_t roomid;
+    uint32_t battleid;
     room_player_status_t status;
     uint32_t teamid;
     uint32_t tankid;

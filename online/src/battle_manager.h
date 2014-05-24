@@ -19,6 +19,12 @@ public:
 
     Battle* alloc_battle(room_t* room);
     void dealloc_battle(Battle* battle);
+    Battle* get_battle_by_id(uint32_t battleid) {
+        if (battle_list_.count(battleid) == 0) {
+            return NULL;
+        }
+        return battle_list_[battleid];
+    }
     
 private:
 

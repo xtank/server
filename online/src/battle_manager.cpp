@@ -15,7 +15,7 @@ extern "C" {
 
 BattleManager::BattleManager()
 {
-    battle_idx_ = 0;
+    battle_idx_ = 1;
 }
 
 BattleManager::~BattleManager()
