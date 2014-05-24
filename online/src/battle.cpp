@@ -20,6 +20,7 @@ Battle::Battle(room_t* room) {
         battle_player.y = 0;
         battle_player.face = 0;
         battle_player.teamid = player->teamid;
+        battle_player.tankid = player->tankid;
 
         if (player->teamid == 1) {
             team1.push_back(battle_player);
@@ -28,6 +29,6 @@ Battle::Battle(room_t* room) {
         }
     }
 
-    this->mapid = room->map_id;
-    this->step = 0;
+    this->mapid_ = room->map_id;
+    this->step_ = 0;
 }

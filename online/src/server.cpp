@@ -5,6 +5,7 @@
 #include "proto_processor.h"
 #include "login_processor.h"
 #include "room_processor.h"
+#include "battle_manager.h"
 #include "common.h"
 #include "server.h"
 #include "service.h"
@@ -67,6 +68,7 @@ extern "C" int  init_service(int isparent)
         init_processors();
         g_player_manager = new PlayerManager(); 
         g_room_manager = new RoomManager();
+        g_battle_manager = new BattleManager();
 
         INIT_LIST_HEAD(&g_reconnect_timer.timer_list);
         setup_timer();

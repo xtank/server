@@ -18,6 +18,7 @@ struct battle_player_t
     uint32_t y; //位置坐标
     uint32_t face; //朝向
     uint32_t teamid; //队伍
+    uint32_t tankid; //坦克id
 };
 
 class Battle {
@@ -42,6 +43,14 @@ public:
         battleid_ = battleid;
     }
 
+    const std::vector<battle_player_t>* get_team1() {
+        return &team1;
+    }
+   
+    const std::vector<battle_player_t>* get_team2() {
+        return &team2;
+    }
+ 
 
 private:
     std::vector<battle_player_t> team1; //队伍1

@@ -15,6 +15,7 @@
 
 struct room_t;
 struct player_t;
+class Battle;
 
 
 class DataProtoUtils
@@ -23,9 +24,13 @@ public:
     static int pack_room_data(const room_t* room,
             onlineproto::room_data_t* room_data);
 
-     static int pack_player_data(const player_t* player,
+    static int pack_player_data(const player_t* player,
             onlineproto::player_data_t* player_data);
-    
+
+    static int pack_battle_data(Battle* battle,
+            onlineproto::battle_data_t* battle_data);
+
+
 };
 
 #endif

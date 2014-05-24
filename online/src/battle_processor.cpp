@@ -8,7 +8,9 @@ extern "C" {
 #include "global_data.h"
 #include "player.h"
 #include "room.h"
+#include "battle.h"
 #include "room_manager.h"
+#include "battle_manager.h"
 #include "player_manager.h"
 #include "data_proto_utils.h"
 #include "room_utils.h"
@@ -51,7 +53,14 @@ int InsideStartCmdProcessor::proc_pkg_from_client(
     room->status = kRoomBusy;
     RoomUtils::send_room_update_msg(roomid, kUpdateRoom);
 
-    //todo 战斗管理类 创建战斗
+    //战斗管理类 创建战斗
+    Battle* battle = g_battle_manager->alloc_battle(room);
+    if (battle == NULL) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+    }
+
+    onlineproto::battle_data_t* battle_data = cli_out_.mutable_battle_data();
+    DataProtoUtils::pack_battle_data(battle, battle_data);
 
     return send_msg_to_player(player, player->wait_cmd, cli_out_);
 }

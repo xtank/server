@@ -15,6 +15,7 @@ extern "C" {
 class ProtoProcessor;
 class PlayerManager;
 class RoomManager;
+class BattleManager;
 class Service;
 class map_conf_mgr_t; 
 struct server_config_t;
@@ -29,7 +30,11 @@ extern PlayerManager* g_player_manager;
 // 命令处理器
 extern ProtoProcessor* g_proto_processor;
 
+// 房间管理器
 extern RoomManager* g_room_manager;
+
+// 战斗管理器
+extern BattleManager* g_battle_manager;
 
 //switch server
 //extern Service* g_switch;
