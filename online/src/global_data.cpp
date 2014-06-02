@@ -8,6 +8,7 @@
 #include "server.h"
 #include "service.h"
 #include "map_conf.h"
+#include "tank_conf.h"
 
 
 PlayerManager* g_player_manager;
@@ -27,3 +28,5 @@ Service* g_dbproxy;
 timer_head_t g_reconnect_timer;
 
 map_conf_mgr_t g_map_conf_mgr;
+
+std::map<uint32_t, tank_conf_t>  g_tank_conf;

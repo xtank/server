@@ -4,6 +4,7 @@
 #include "room_manager.h"
 #include "proto_processor.h"
 #include "login_processor.h"
+#include "battle_processor.h"
 #include "room_processor.h"
 #include "battle_manager.h"
 #include "common.h"
@@ -11,6 +12,8 @@
 #include "service.h"
 #include "timer_procs.h"
 #include "room_utils.h"
+//#include "xmlutils.h"
+#include "xml_configs.h"
 
 extern "C" {
 #include <libtaomee/log.h>
@@ -52,6 +55,7 @@ extern "C" {
 static int init_processors();
 static int init_connections();
 static int start_function_timers();
+static bool load_configs();
 
 extern "C" int  init_service(int isparent)
 {
@@ -76,6 +80,7 @@ extern "C" int  init_service(int isparent)
 
         memset(&g_server_config, 0, sizeof(g_server_config));
         CONFIG_READ_STRVAL(g_server_config, dbproxy_name);
+        CONFIG_READ_STRVAL(g_server_config, conf_path);
 
         // 初始化网络连接
         if (init_connections() != 0) {
@@ -83,6 +88,10 @@ extern "C" int  init_service(int isparent)
             return -1;
         }
 
+        // 加载配置文件
+        if (!load_configs()) {
+            return -1;
+        }
 
         // 启动业务逻辑定时器 
         if (start_function_timers() != 0) {
@@ -211,40 +220,36 @@ int init_processors()
     g_proto_processor->register_command(cli_cmd_cs_select_team, new SelectTeamCmdProcessor());
 
 
+    g_proto_processor->register_command(cli_cmd_cs_inside_start, new InsideStartCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_battle_ready, new BattleReadyCmdProcessor());
 
     return 0;
 }
 
-//const char *gen_full_path(const char *base_path, const char *file_name)
-//{
-    //static char full_path[1024];
-    //snprintf(full_path, sizeof(full_path), "%s/%s", base_path, file_name);
-    //return full_path;
-//}
+const char *gen_full_path(const char *base_path, const char *file_name)
+{
+    static char full_path[1024];
+    snprintf(full_path, sizeof(full_path), "%s/%s", base_path, file_name);
+    return full_path;
+}
 
 bool load_configs()
 {
-    //bool succ = (1
-            //&& load_xmlconf(gen_full_path(g_server_config.conf_path, "titles.xml"), load_title_config) == 0
-           //);
+    bool succ = (1
+            && load_xmlconf(gen_full_path(g_server_config.conf_path, "tank.xml"), load_tank_config) == 0
+           );
 
-    //return succ;
-    return 0;
+    return succ;
 }
 
 int init_connections()
 {
     // 初始化dbproxy
-    //g_dbproxy = new Service(std::string(g_server_config.dbproxy_name), std::string("10.165.2.41"), 4102);
     g_dbproxy = new Service(std::string(g_server_config.dbproxy_name));
     ADD_TIMER_EVENT_EX(&g_reconnect_timer, 
             kTimerTypeReconnectServiceTimely, 
             g_dbproxy,
             get_now_tv()->tv_sec + kTimerIntervalReconnectServiceTimely); 
-
-    //if (g_dbproxy->connect() != 0) {
-        //KERROR_LOG(0, "init server connections failed"); 
-    //}
 
     return 0;
 }

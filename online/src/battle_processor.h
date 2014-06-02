@@ -36,4 +36,30 @@ private:
     onlineproto::sc_battle_ready cli_out_;  
 };
 
+class TankMoveCmdProcessor : public CmdProcessorInterface
+{
+public:
+
+    int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+private:
+    onlineproto::cs_tank_move cli_in_;  
+    onlineproto::sc_tank_move cli_out_;  
+};
+
+class TankMoveStopCmdProcessor : public CmdProcessorInterface
+{
+public:
+
+    int proc_pkg_from_client(player_t* player, const char* body, int bodylen);
+    int proc_pkg_from_serv(player_t* player, const char* body, int bodylen);
+
+private:
+    onlineproto::cs_tank_move_stop cli_in_;  
+    onlineproto::sc_tank_move_stop cli_out_;  
+};
+
+
+
 #endif

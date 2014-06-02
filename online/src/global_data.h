@@ -19,6 +19,7 @@ class BattleManager;
 class Service;
 class map_conf_mgr_t; 
 struct server_config_t;
+struct tank_conf_t;
 
 struct timer_head_t{
     list_head_t timer_list;
@@ -46,5 +47,7 @@ extern server_config_t g_server_config;
 extern timer_head_t g_reconnect_timer;
 
 extern map_conf_mgr_t g_map_conf_mgr;
+
+extern std::map<uint32_t, tank_conf_t>  g_tank_conf;
 
 #endif

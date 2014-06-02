@@ -21,6 +21,12 @@ struct battle_player_t
     userid_t userid; // 米米号
 
     uint32_t hp; //战斗血量
+    uint32_t speed; //速度
+    uint32_t attack; //攻击力
+    uint32_t defence; //防守
+    uint32_t attack_scope; //攻击范围
+    uint32_t attack_speed; //攻击速度
+
     uint32_t x;  //位置坐标
     uint32_t y; //位置坐标
     uint32_t face; //朝向

@@ -34,8 +34,6 @@ Battle* BattleManager::alloc_battle(room_t* room)
 
     battle_list_[battle_idx_] = battle;
     battle->set_battleid(battle_idx_);
-    battle->set_mapid(room->map_id);
-    battle->set_step(0);
 
     battle_idx_++;
 

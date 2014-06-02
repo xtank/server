@@ -1,6 +1,8 @@
 #include "battle.h"
 #include "player.h"
 #include "room.h"
+#include "global_data.h"
+#include "tank_conf.h"
 
 
 Battle::Battle(room_t* room) {
@@ -15,7 +17,19 @@ Battle::Battle(room_t* room) {
         battle_player.userid = player->userid;
 
         //todo
-        battle_player.hp = 100;
+        if (g_tank_conf.count(player->tankid) == 0) {
+            continue;
+        }
+
+        tank_conf_t tank = g_tank_conf[player->tankid];
+
+        battle_player.hp = tank.hp;
+        battle_player.speed = tank.speed;
+        battle_player.attack = tank.atk;
+        battle_player.defence = tank.def;
+        battle_player.attack_scope = tank.atk_scope;
+        battle_player.attack_speed = tank.atk_speed;
+
         battle_player.x = 0;
         battle_player.y = 0;
         battle_player.face = 0;

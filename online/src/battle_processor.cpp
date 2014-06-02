@@ -64,7 +64,9 @@ int InsideStartCmdProcessor::proc_pkg_from_client(
     onlineproto::battle_data_t* battle_data = cli_out_.mutable_battle_data();
     DataProtoUtils::pack_battle_data(battle, battle_data);
 
-    return send_msg_to_player(player, player->wait_cmd, cli_out_);
+    g_room_manager->send_msg_to_room_player(player->wait_cmd, player->roomid, cli_out_);
+
+    return 0;
 }
 
 int InsideStartCmdProcessor::proc_pkg_from_serv(
@@ -136,6 +138,60 @@ int BattleReadyCmdProcessor::proc_pkg_from_serv(
     return 0;
 }
 
+int TankMoveCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
 
+    uint32_t start_x = cli_in_.start_x();
+    uint32_t start_y = cli_out_.start_y();
+    uint32_t start_time = cli_out_.start_time();
+    uint32_t dir = cli_out_.dir();
+
+
+    cli_out_.set_start_x(start_x);
+    cli_out_.set_start_y(start_y);
+    cli_out_.set_start_time(start_time);
+    cli_out_.set_dir(dir);
+    cli_out_.set_userid(player->userid);
+    
+    //向房间内广播移动协议
+    g_room_manager->send_msg_to_room_player(player->wait_cmd, player->roomid, cli_out_);
+
+    return 0;
+}
+
+int TankMoveCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+int TankMoveStopCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    uint32_t stop_x = cli_in_.stop_x();
+    uint32_t stop_y = cli_in_.stop_y();
+   
+    cli_out_.set_userid(player->userid);
+    cli_out_.set_stop_x(stop_x);
+    cli_out_.set_stop_y(stop_y);
+
+
+    //向房间内广播移动协议
+    g_room_manager->send_msg_to_room_player(player->wait_cmd, player->roomid, cli_out_);
+
+    return 0;
+}
+
+int TankMoveStopCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
 
 

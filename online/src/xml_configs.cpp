@@ -9,6 +9,7 @@
 #include "global_data.h"
 #include "xml_configs.h"
 #include "map_conf.h"
+#include "tank_conf.h"
 
 // 加载地图配置信息
 int load_map_config(xmlNodePtr root)
@@ -92,3 +93,28 @@ int load_map_config(xmlNodePtr root)
     return 0;
 }
 
+//加载坦克信息
+int load_tank_config(xmlNodePtr root)
+{
+    g_tank_conf.clear();
+    xmlNodePtr cur = root->xmlChildrenNode;
+    while (cur) {
+        if (!xmlStrcmp(cur->name, (const xmlChar *)"tank")) {
+
+            tank_conf_t tank_conf;
+            DECODE_XML_PROP_UINT32(tank_conf.id, cur, "id");
+            DECODE_XML_PROP_UINT32(tank_conf.hp, cur, "hp");
+            DECODE_XML_PROP_UINT32(tank_conf.speed, cur, "speed");
+            DECODE_XML_PROP_UINT32(tank_conf.def, cur, "defense");
+            DECODE_XML_PROP_UINT32(tank_conf.atk, cur, "attack");
+            DECODE_XML_PROP_UINT32(tank_conf.atk_speed, cur, "attackSpeed");
+            DECODE_XML_PROP_UINT32(tank_conf.atk_scope, cur, "attackScope");
+
+            g_tank_conf[tank_conf.id] = tank_conf;
+        }
+
+        cur = cur->next;
+    }
+
+    return 0;
+}

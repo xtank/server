@@ -63,7 +63,7 @@ int DataProtoUtils::pack_battle_data(Battle* battle,
         member_data1->set_dir(team1->at(i).face);
     }
 
-    for (uint32_t i = 0; i < team1->size(); i++) {
+    for (uint32_t i = 0; i < team2->size(); i++) {
         onlineproto::battle_member_data_t* member_data2 = team2_data->add_member_list();
         member_data2->set_userid(team2->at(i).userid);
         member_data2->set_tankid(team2->at(i).tankid);
