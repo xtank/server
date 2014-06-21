@@ -223,6 +223,12 @@ int init_processors()
     g_proto_processor->register_command(cli_cmd_cs_inside_start, new InsideStartCmdProcessor());
     g_proto_processor->register_command(cli_cmd_cs_battle_ready, new BattleReadyCmdProcessor());
 
+    g_proto_processor->register_command(cli_cmd_cs_tank_move, new TankMoveCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_tank_move_stop, new TankMoveStopCmdProcessor());
+
+    g_proto_processor->register_command(cli_cmd_cs_tank_fire, new TankFireCmdProcessor());
+    g_proto_processor->register_command(cli_cmd_cs_tank_hit, new TankHitCmdProcessor());
+
     return 0;
 }
 

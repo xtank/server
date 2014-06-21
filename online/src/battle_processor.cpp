@@ -144,10 +144,16 @@ int TankMoveCmdProcessor::proc_pkg_from_client(
     cli_in_.Clear();
     cli_out_.Clear();
 
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+
     uint32_t start_x = cli_in_.start_x();
-    uint32_t start_y = cli_out_.start_y();
-    uint32_t start_time = cli_out_.start_time();
-    uint32_t dir = cli_out_.dir();
+    uint32_t start_y = cli_in_.start_y();
+    uint32_t start_time = cli_in_.start_time();
+    uint32_t dir = cli_in_.dir();
 
 
     cli_out_.set_start_x(start_x);
@@ -174,6 +180,11 @@ int TankMoveStopCmdProcessor::proc_pkg_from_client(
     cli_in_.Clear();
     cli_out_.Clear();
 
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
     uint32_t stop_x = cli_in_.stop_x();
     uint32_t stop_y = cli_in_.stop_y();
    
@@ -193,5 +204,109 @@ int TankMoveStopCmdProcessor::proc_pkg_from_serv(
 {
     return 0;
 }
+
+
+int TankFireCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    Battle* battle = g_battle_manager->get_battle_by_id(player->battleid);
+    if (battle == NULL) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+    }
+
+    battle_player_t* battle_player = battle->get_battle_player_by_id(player->userid);
+    if (battle_player == NULL) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+    }
+
+    cli_out_.set_atkuserid(cli_in_.atkuserid());
+    cli_out_.set_atk_x(cli_in_.atk_x());
+    cli_out_.set_atk_y(cli_in_.atk_y());
+    cli_out_.set_fire_time(cli_in_.fire_time());
+    cli_out_.set_fire_dir(cli_in_.fire_dir());
+    cli_out_.set_fire_id(cli_in_.fire_id());
+   
+
+    //向房间内广播移动协议
+    g_room_manager->send_msg_to_room_player(player->wait_cmd, player->roomid, cli_out_);
+
+    return 0;
+}
+
+int TankFireCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+int TankHitCmdProcessor::proc_pkg_from_client(
+        player_t* player, const char* body, int bodylen)
+{
+    cli_in_.Clear();
+    cli_out_.Clear();
+
+    if (parse_message(body, bodylen, &cli_in_)) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_proto_format_err);
+    }
+
+    uint32_t atkUserId = cli_in_.atkuserid();
+    uint32_t defUserId = cli_in_.defuserid();
+
+    if (player->userid != defUserId) {
+        return send_err_to_player(player, 
+                player->wait_cmd, cli_err_sys_err);
+    }
+
+    Battle* battle = g_battle_manager->get_battle_by_id(player->battleid);
+    if (battle == NULL) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+    }
+
+    battle_player_t* atk_battle_player = battle->get_battle_player_by_id(atkUserId);
+    if (atk_battle_player == NULL) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+    }
+
+    battle_player_t* def_battle_player = battle->get_battle_player_by_id(defUserId);
+    if (def_battle_player == NULL) {
+        return send_err_to_player(player, player->wait_cmd, cli_err_sys_err);
+    }
+
+    uint32_t atk = atk_battle_player->attack;
+
+    def_battle_player->hp = (def_battle_player->hp - atk < 0) ? 0:def_battle_player->hp - atk;
+
+    cli_out_.set_atkuserid(cli_in_.atkuserid());
+    cli_out_.set_atk_x(cli_in_.atk_x());
+    cli_out_.set_atk_y(cli_in_.atk_y());
+    cli_out_.set_fire_id(cli_in_.fire_id());
+    cli_out_.set_defuserid(cli_in_.defuserid());
+    cli_out_.set_def_x(cli_in_.def_x());
+    cli_out_.set_def_y(cli_in_.def_y());
+    cli_out_.set_hp(atk);
+
+    //向房间内广播移动协议
+    g_room_manager->send_msg_to_room_player(player->wait_cmd, player->roomid, cli_out_);
+
+    return 0;
+}
+
+int TankHitCmdProcessor::proc_pkg_from_serv(
+        player_t* player, const char* body, int bodylen)
+{
+    return 0;
+}
+
+
+
 
 
